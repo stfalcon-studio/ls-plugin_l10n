@@ -1,0 +1,27 @@
+ul.tabs {
+    margin: 0;
+    padding: 0 0 2px 0;
+}
+
+li.tab {
+    background-color: #f2efed;
+    color: #83A13F;
+    display: inline;
+    padding: 4px .4em 2px .4em;
+    list-style: none;
+    border: 1px solid #CEC6C3;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+}
+li.tab:hover{
+    cursor: pointer;
+}
+li.tab.active {
+    background-color: white;
+    cursor: default;
+}
+
+div.content {
+    padding-top: .4em;
+}

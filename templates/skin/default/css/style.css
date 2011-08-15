@@ -1,0 +1,4 @@
+.topic .action li.translate a { background: url(../images/translate.jpg) no-repeat 0 1px; padding-left: 15px; margin-left: 10px; text-decoration: none; font-size: 11px; color: #51B038; }
+
+.block-lang{ height: 25px; }
+.block-lang li { float: left; }
