@@ -12,7 +12,10 @@ class PluginL10n extends Plugin {
      * перед инициализацией плагина
      */
     public $aInherits = array(
-        'action' => array('ActionSettings' => '_ActionSettings'),
+        'action' => array(
+            'ActionSettings' => '_ActionSettings',
+            'ActionSearch' => '_ActionSearch'
+        ),
         'module' => array(
             'ModuleBlog' => '_ModuleBlog',
             'ModuleTopic' => '_ModuleTopic',
@@ -22,6 +25,7 @@ class PluginL10n extends Plugin {
         ),
         'entity' => array(
             'ModuleBlog_EntityBlog' => '_ModuleBlog_EntityBlog',
+            'ModuleTopic_EntityTopic' => '_ModuleTopic_EntityTopic',
         ),
         'mapper' => array(
             'ModuleBlog_MapperBlog' => '_ModuleBlog_MapperBlog',

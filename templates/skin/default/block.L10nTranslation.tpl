@@ -10,10 +10,10 @@
                 {if $aTopicTranslates}
                     <h2>{$aLang.l10n_topic_translations}</h2>
                     <ul class="block-lang">
-                    {foreach from=$aTopicTranslates item=oTopic}
+                    {foreach from=$aTopicTranslates item=oTopicTranslates}
                         <li>
-                            <img src="{$sTemplateWebPathPluginL10n}images/flags/{$oTopic->getTopicLang()}.png">
-                            <a href="{$oTopic->getUrl()}">{$oTopic->getTitle()}</a>
+                            <img src="{$sTemplateWebPathPluginL10n}images/flags/{$oTopicTranslates->getTopicLang()}.png">
+                            <a href="{$oTopicTranslates->getUrl()}">{$oTopicTranslates->getTitle()}</a>
                         </li>
                     {/foreach}
                     </ul>
