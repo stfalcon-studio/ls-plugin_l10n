@@ -69,16 +69,28 @@ class PluginL10n_HookTopic extends Hook
      */
     public function TopicAddShow()
     {
+        if (!(Router::GetActionEvent() == 'add' && Router::GetParam(0) == 'translate')) {
+            return;
+        }
         if ($oTopicOriginal = $this->_getTopicOriginalByUrParams()) {
             // проверка на попытку добавить перевод к переводу
             if ($oTopicOriginal->getTopicOriginalId()) {
                 $this->Message_AddErrorSingle(
-                        $this->Lang_Get('l10n_topic_translate_not_original'),
-                        $this->Lang_Get('error'));
+                        $this->Lang_Get('l10n_topic_translate_not_original'), $this->Lang_Get('error'));
+                return;
+            }
+
+            if (!$this->_IsAllowTopicTranslation($oTopicOriginal)) {
+                $this->Message_AddErrorSingle(
+                        $this->Lang_Get('l10n_topic_translate_not_exist'), $this->Lang_Get('error'));
+                return;
             }
 
             // активным пунктом блогом в селекте будет блог топика-оригинала
             $_REQUEST['blog_id'] = $oTopicOriginal->getBlogId();
+        } else {
+            $this->Message_AddErrorSingle(
+                    $this->Lang_Get('l10n_topic_translate_not_exist'), $this->Lang_Get('error'));
         }
     }
 
@@ -111,8 +123,8 @@ class PluginL10n_HookTopic extends Hook
 
         if ($this->PluginL10n_L10n_GetLangAliasFromUrl() != $this->PluginL10n_L10n_GetAliasByLang($oTopic->getTopicLang())) {
             $oBlog = $this->Blog_GetBlogL10n($oTopic->getBlog(), $oTopic->getTopicLang());
-	    $sBlogUrl = $oBlog->getUrl()?$oBlog->getUrl() . '/' : '';
-            $sCanonicalUrl = Router::GetPath('blog', $this->PluginL10n_L10n_GetAliasByLang($oTopic->getTopicLang())).$sBlogUrl.$oTopic->getId().'.html';
+            $sBlogUrl = $oBlog->getUrl() ? $oBlog->getUrl() . '/' : '';
+            $sCanonicalUrl = Router::GetPath('blog', $this->PluginL10n_L10n_GetAliasByLang($oTopic->getTopicLang())) . $sBlogUrl . $oTopic->getId() . '.html';
             $this->Viewer_Assign('sCanonicalUrl', $sCanonicalUrl);
         }
 
@@ -147,6 +159,14 @@ class PluginL10n_HookTopic extends Hook
     public function CheckTopicFields($aData)
     {
         $btnOk = &$aData['bOk'];
+
+        if (Router::GetActionEvent() == 'add' && Router::GetParam(0) == 'translate') {
+            if (!$oTopicOriginal = $this->_getTopicOriginalByUrParams()) {
+                $this->Message_AddError(
+                        $this->Lang_Get('l10n_topic_translate_not_exist'), $this->Lang_Get('error'));
+                $btnOk = false;
+            }
+        }
 
         if ($oTopicOriginal = $this->_getTopicOriginalByUrParams()) {
             // проверка или такой язык есть в списке доступных
@@ -192,14 +212,7 @@ class PluginL10n_HookTopic extends Hook
             }
         } elseif (Router::GetActionEvent() == 'add' && Router::GetParam(0) == 'translate') {
             $iTopicId = Router::GetParam(1);
-            $oTopicOriginal = $this->Topic_GetTopicById($iTopicId);
-            if (!$oTopicOriginal) {
-                throw new Exception('Original topic by id "' . $iTopicId . '" is not found!');
-            } else if (!$this->_IsAllowTopicTranslation($oTopicOriginal)) {
-                throw new Exception('Translation not allowed!');
-            } else {
-                return $oTopicOriginal;
-            }
+            return $this->Topic_GetTopicById($iTopicId);
         }
 
         return null;

@@ -5,7 +5,7 @@ Config::Set('db.table.blog_l10n', '___db.table.prefix___blog_l10n');
 $config = array();
 
 // список доступных языков (для разных языковых версий сайта)
-$config['allowed_langs'] = array('ukrainian', 'russian');
+$config['allowed_langs'] = array('ukrainian', 'russian', 'english');
 
 // ключ - язык в урл, значение - папка языка в livestreet
 // коды языков взяты из вики http://ru.wikipedia.org/wiki/%D0%9A%D0%BE%D0%B4%D1%8B_%D1%8F%D0%B7%D1%8B%D0%BA%D0%BE%D0%B2
@@ -24,7 +24,7 @@ $config['langs_aliases'] = array(
 $config['lang_block']['priority'] = 500;
 $config['translate_block']['priority'] = 500;
 $config['user_lang_settings'] = 1;  //  позволяет менять язык через настройки пользователя
-$config['lang_in_url'] = 0; // подставлять язык в урл всегда, позволяет делать выборку в базе по всем языкам, если в урле не передан язык
+$config['lang_in_url'] = 1; // подставлять язык в урл всегда, позволяет делать выборку в базе по всем языкам, если в урле не передан язык
 // 'lang' - уведомления о новом топике будут получать пользователи с таким же языком в настройках как и язык топика
 // 'original' - уведомления будут получать все, но только об оригинальном топике (не переводе)
 // 'default' или любое другое значение - будет использоватся базовая рассылка

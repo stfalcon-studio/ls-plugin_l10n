@@ -76,28 +76,23 @@ class PluginL10n_HookBlog extends Hook {
      * @param array $aData
      */
     public function BlogEditAfter($aData) {
-	// сохраняем для текущего языка
-	$sCurrentLang = $this->Lang_GetLang();
+        // сохраняем для текущего языка
+        $sCurrentLang = $this->Lang_GetLang();
         if (isset($aData['oBlog'])) {
-	    // коллективный блог
-            $oBlog = clone $aData['oBlog'];
+            // коллективный блог
+            $oBlog = $aData['oBlog'];
             $bPersonalBlog = false;
-	    
-	    $sTitleText = getRequest('blog_title', null, 'post');
+
+            $sTitleText = getRequest('blog_title', null, 'post');
             $sDescriptionText = $this->Text_Parser(getRequest('blog_description', null, 'post'));
             $oBlog->setBlogUrlL10n(getRequest('blog_url', null, 'post'));
-        } elseif(isset($aData['result']) && is_a($aData['result'], 'ModuleBlog_EntityBlog')) {
-	    // персональный блог
-            $oBlog = clone $aData['result'];
+        } elseif (isset($aData['result']) && is_a($aData['result'], 'ModuleBlog_EntityBlog')) {
+            // персональный блог
+            $oBlog = $aData['result'];
             $bPersonalBlog = true;
             $sOwnerLogin = (isset($aData['params'][0])) ? $aData['params'][0]->GetLogin() : '';
-	    
             $sTitleText = $this->Lang_Get('blogs_personal_title') . ' ' . $sOwnerLogin;
             $sDescriptionText = $this->Lang_Get('blogs_personal_description');
-	    /**
-	     * @todo: Андрей прав. в персональных блогах null вызывает ошибку
-             */
-            $oBlog->setBlogUrlL10n(getRequest('blog_url', " ", 'post'));
         }
 
         $oBlog->setBlogLang($sCurrentLang);
@@ -111,13 +106,19 @@ class PluginL10n_HookBlog extends Hook {
          */
         $this->Blog_ReplaceBlogL10n($oBlog);
 
+        if ($bPersonalBlog) {
+            $oBlog = clone $aData['result'];
+        } else {
+            $oBlog = clone $aData['oBlog'];
+        }
+
         // сохраняем переводы
         $aLangs = $this->PluginL10n_L10n_GetAllowedLangs($sCurrentLang);
         foreach ($aLangs as $sLang) {
-	    $this->Lang_SetLang($sLang);
-	    
+            $this->Lang_SetLang($sLang);
+
             if ($bPersonalBlog) {
-		// для персонального блога формируется название вида "Blog by username"
+                // для персонального блога формируется название вида "Blog by username"
                 $sTitleText = $this->Lang_Get('blogs_personal_title') . ' ' . $sOwnerLogin;
                 $sDescriptionText = $this->Lang_Get('blogs_personal_description');
             } else {
@@ -128,13 +129,13 @@ class PluginL10n_HookBlog extends Hook {
             $oBlog->setBlogLang($sLang);
             $oBlog->setBlogTitleL10n($sTitleText);
             $oBlog->setBlogDescriptionL10n($sDescriptionText);
-	    $oBlog->setBlogUrlL10n(getRequest('blog_url' . '_' . $sLang, null, 'post'));
+            $oBlog->setBlogUrlL10n(getRequest('blog_url' . '_' . $sLang, null, 'post'));
             if (!$this->Blog_ReplaceBlogL10n($oBlog)) {
                 $this->Message_AddError($this->Lang_Get('system_error'), $this->Lang_Get('error'));
             }
         }
 
-	$this->Lang_SetLang($sCurrentLang);
+        $this->Lang_SetLang($sCurrentLang);
     }
 
     /**

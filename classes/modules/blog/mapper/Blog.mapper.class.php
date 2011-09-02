@@ -108,29 +108,26 @@ class PluginL10n_ModuleBlog_MapperBlog extends PluginL10n_Inherit_ModuleBlog_Map
      * Get blog localisation info
      *
      * @param PluginL10n_ModuleBlog_EntityBlog $oBlog
-     * @param string $lang
+     * @param string $sLang
      * @return PluginL10n_ModuleBlog_EntityBlog
      */
-    public function GetBlogL10n($oBlog, $lang) {
-
+    public function GetBlogL10n($oBlog, $sLang) {
         $sql = "SELECT
-                    b.*,
-                    bl.blog_title_l10n,
-                    bl.blog_description_l10n,
-                    bl.blog_url_l10n,
-                    bl.blog_lang
+                    *
                 FROM
-                    " . Config::Get('db.table.blog') . " as b
-                LEFT JOIN (SELECT * FROM " . Config::Get('db.table.blog_l10n') . " as bl WHERE blog_lang = ?) as bl
-                    ON bl.blog_id = b.blog_id
+                    " . Config::Get('db.table.blog_l10n') . "
                 WHERE
-                    b.blog_id = ?d
+                    blog_id = ?d
+                    AND blog_lang = ?
                 ";
 
-
-        if ($aRow = $this->oDb->select($sql, $lang, $oBlog->getId())) {
-            $oBlog = Engine::GetEntity('Blog', $aRow[0]);
+        if ($aRow = $this->oDb->selectRow($sql, $oBlog->getId(), $sLang)) {
+                $oBlog->setTitleL10n($aRow['blog_title_l10n']);
+                $oBlog->setDescriptionL10n($aRow['blog_description_l10n']);
+                $oBlog->setUrlL10n($aRow['blog_url_l10n']);
+                $oBlog->setLang($aRow['blog_lang']);
         }
+
         return $oBlog;
     }
 
