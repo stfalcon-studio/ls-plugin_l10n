@@ -41,8 +41,8 @@ class PluginL10n extends Plugin {
      * @return boolean
      */
     public function Activate() {
-        // @todo добавить очистку кеша для тегов user_login_*
         $resutls = $this->ExportSQL(dirname(__FILE__) . '/activate.sql');
+        $this->Cache_Clean();
         return $resutls['result'];
     }
 
@@ -63,6 +63,7 @@ class PluginL10n extends Plugin {
      */
     public function Deactivate() {
         $resutls = $this->ExportSQL(dirname(__FILE__) . '/deactivate.sql');
+        $this->Cache_Clean();
         return $resutls['result'];
     }
 
