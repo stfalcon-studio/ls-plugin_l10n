@@ -230,7 +230,10 @@ class PluginL10n_ModuleTopic extends PluginL10n_Inherit_ModuleTopic
             parent::SendNotifyTopicNew($oBlog, $oTopic, $oUserTopic);
         }
 
-        $aBlogUsers = $this->Blog_GetBlogUsersByBlogId($oBlog->getId());
+        $aBlogUsersResult = $this->Blog_GetBlogUsersByBlogId($oBlog->getId());
+
+        $aBlogUsers = $aBlogUsersResult['collection'];
+        
         foreach ($aBlogUsers as $oBlogUser) {
             if ($oBlogUser->getUserId() == $oUserTopic->getId()) {
                 continue;
