@@ -3,7 +3,8 @@
 /**
  * Модуль плагина L10n
  */
-class PluginL10n_ModuleL10n extends Module {
+class PluginL10n_ModuleL10n extends Module
+{
 
     /**
      * Метод инициализации модуля
@@ -11,6 +12,7 @@ class PluginL10n_ModuleL10n extends Module {
      * @return void
      */
     public function Init() {
+
     }
 
     /**
@@ -85,11 +87,12 @@ class PluginL10n_ModuleL10n extends Module {
     public function GetAllowedLangs($sExcludeLang = 'null') {
         $aAllowedLangs = Config::Get('plugin.l10n.allowed_langs');
         foreach ($aAllowedLangs as $iKey => $sLang) {
-            if ($sExcludeLang == $sLang) {
+            if ((is_array($sExcludeLang) && in_array($sLang, $sExcludeLang))
+                    || (is_string($sExcludeLang) && ($sExcludeLang == $sLang))) {
                 unset($aAllowedLangs[$iKey]);
             }
         }
-        
+
         return $aAllowedLangs;
     }
 
@@ -99,9 +102,7 @@ class PluginL10n_ModuleL10n extends Module {
      * @return array
      */
     public function GetAllowedLangsAliases() {
-        return array_intersect_key(
-                $this->GetLangsAliases(),
-                array_flip($this->GetAllowedLangs())
+        return array_intersect_key($this->GetLangsAliases(), array_flip($this->GetAllowedLangs())
         );
     }
 
@@ -128,6 +129,7 @@ class PluginL10n_ModuleL10n extends Module {
                 return true;
             }
         } catch (Exception $e) {
+
         }
 
         return false;
@@ -155,12 +157,12 @@ class PluginL10n_ModuleL10n extends Module {
         Router::setLang($sLang);
     }
 
-    public function GetLangForQuery()
-    {
+    public function GetLangForQuery() {
         if (Config::Get('plugin.l10n.lang_in_url')) {
-             return Config::Get('lang.current');
+            return Config::Get('lang.current');
         } else {
             return $this->PluginL10n_L10n_GetLangFromUrl();
         }
     }
+
 }

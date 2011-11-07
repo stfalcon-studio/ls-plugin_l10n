@@ -22,6 +22,7 @@ return array(
     'l10n_topic_translations' => 'Переклади',
     'l10n_topic_original' => 'Оригінал',
     'l10n_topic_translate_not_original' => 'Неможливо створити переклад до перекладу',
+    'l10n_available_translates_error' => 'Доступні мови для перекладу відсутні',
     'l10n_topic_translate_not_exist' => 'Топік для перекладу не існує',
     'l10n_topic_translate_lang_error' => 'Мова перекладу співпадає з мовою оригіналу',
 

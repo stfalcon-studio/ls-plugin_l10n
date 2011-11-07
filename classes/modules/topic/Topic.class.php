@@ -3,7 +3,8 @@
 /**
  * Модуль Topic плагина L10n
  */
-class PluginL10n_ModuleTopic extends PluginL10n_Inherit_ModuleTopic {
+class PluginL10n_ModuleTopic extends PluginL10n_Inherit_ModuleTopic
+{
 
     /**
      * Список топиков по модифицированному фильтру
@@ -16,8 +17,7 @@ class PluginL10n_ModuleTopic extends PluginL10n_Inherit_ModuleTopic {
     public function GetTopicsByFilter($aFilter, $iPage = 0, $iPerPage = 0, $aAllowData = array('user' => array(), 'blog' => array('owner' => array()),
         'vote', 'favourite', 'comment_new')
     ) {
-        return parent::GetTopicsByFilter($this->_getModifiedFilter($aFilter),
-                $iPage, $iPerPage, $aAllowData
+        return parent::GetTopicsByFilter($this->_getModifiedFilter($aFilter), $iPage, $iPerPage, $aAllowData
         );
     }
 
@@ -193,8 +193,7 @@ class PluginL10n_ModuleTopic extends PluginL10n_Inherit_ModuleTopic {
                 . (is_null($this->PluginL10n_L10n_GetLangForQuery()) ? '' : '_' . $this->PluginL10n_L10n_GetLangForQuery());
         if (false === ($data = $this->Cache_Get($id))) {
             $data = $this->oMapperTopic->GetTopicsRatingByDate(
-                            $sDate, $iLimit, $aCloseBlogs,
-                            $this->PluginL10n_L10n_GetLangForQuery()
+                    $sDate, $iLimit, $aCloseBlogs, $this->PluginL10n_L10n_GetLangForQuery()
             );
             $this->Cache_Set($data, $id, array('topic_update'), 60 * 60 * 24 * 2);
         }
@@ -214,37 +213,40 @@ class PluginL10n_ModuleTopic extends PluginL10n_Inherit_ModuleTopic {
     }
 
     /**
-	 * Рассылает уведомления о новом топике подписчикам блога
-	 *
-	 * @param unknown_type $oBlog
-	 * @param unknown_type $oTopic
-	 * @param unknown_type $oUserTopic
-	 */
-	public function SendNotifyTopicNew($oBlog,$oTopic,$oUserTopic) {
-        if ( Config::Get('plugin.l10n.notify') == 'original'){
+     * Рассылает уведомления о новом топике подписчикам блога
+     *
+     * @param unknown_type $oBlog
+     * @param unknown_type $oTopic
+     * @param unknown_type $oUserTopic
+     */
+    public function SendNotifyTopicNew($oBlog, $oTopic, $oUserTopic) {
+        if (Config::Get('plugin.l10n.notify') == 'original') {
             if (is_null($oTopic->getTopicOriginalId())) {
-                return parent::SendNotifyTopicNew($oBlog,$oTopic,$oUserTopic);
+                return parent::SendNotifyTopicNew($oBlog, $oTopic, $oUserTopic);
             } else {
                 return;
             }
-        } elseif (Config::Get('plugin.l10n.notify') != 'lang'){
-                parent::SendNotifyTopicNew($oBlog,$oTopic,$oUserTopic);
+        } elseif (Config::Get('plugin.l10n.notify') != 'lang') {
+            parent::SendNotifyTopicNew($oBlog, $oTopic, $oUserTopic);
         }
 
-		$aBlogUsers=$this->Blog_GetBlogUsersByBlogId($oBlog->getId());
-		foreach ($aBlogUsers as $oBlogUser) {
-			if ($oBlogUser->getUserId()==$oUserTopic->getId()) {
-				continue;
-			}
-            if ($oBlogUser->getUser()->getUserLang() != $oTopic->getTopicLang()){
+        $aBlogUsersResult = $this->Blog_GetBlogUsersByBlogId($oBlog->getId());
+
+        $aBlogUsers = $aBlogUsersResult['collection'];
+        
+        foreach ($aBlogUsers as $oBlogUser) {
+            if ($oBlogUser->getUserId() == $oUserTopic->getId()) {
                 continue;
             }
-			$this->Notify_SendTopicNewToSubscribeBlog($oBlogUser->getUser(),$oTopic,$oBlog,$oUserTopic);
-		}
-		//отправляем создателю блога
-		if ($oBlog->getOwnerId()!=$oUserTopic->getId()) {
-			$this->Notify_SendTopicNewToSubscribeBlog($oBlog->getOwner(),$oTopic,$oBlog,$oUserTopic);
-		}
-	}
+            if ($oBlogUser->getUser()->getUserLang() != $oTopic->getTopicLang()) {
+                continue;
+            }
+            $this->Notify_SendTopicNewToSubscribeBlog($oBlogUser->getUser(), $oTopic, $oBlog, $oUserTopic);
+        }
+        //отправляем создателю блога
+        if ($oBlog->getOwnerId() != $oUserTopic->getId()) {
+            $this->Notify_SendTopicNewToSubscribeBlog($oBlog->getOwner(), $oTopic, $oBlog, $oUserTopic);
+        }
+    }
 
 }

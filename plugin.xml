@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin>
-        <name>
-                <lang name="default">L10n</lang>
-        </name>
-        <author>
-                <lang name="default">Stepan Tanasiychuk</lang>
-                <lang name="russian">Степан Танасийчук</lang>
-                <lang name="ukrainian">Степан Танасійчук</lang>
-        </author>
-        <homepage>http://stfalcon.com/</homepage>
-        <version>0.2.1</version>
-        <requires>
-                <livestreet>0.4.0</livestreet>
-                <plugins>
-                </plugins>
-        </requires>
-        <description>
-                <lang name="default">Allow user to choose interface language.</lang>
-                <lang name="russian">Позволяет пользователю выбирать язык интерфейса.</lang>
-                <lang name="ukrainian">Дає користувачу можливість вибирати мову інтерфейсу.</lang>
-        </description>
-        <delegate>
-                <module></module>
-                <action></action>
-                <template></template>
-                <entity></entity>
-        </delegate>
+	<name>
+		<lang name="default">L10n</lang>
+	</name>
+	<author>
+		<lang name="default">Web studio stfalcon.com</lang>
+		<lang name="russian">Веб студия stfalcon.com</lang>
+		<lang name="ukrainian">Веб студія stfalcon.com</lang>
+	</author>
+	<homepage>http://stfalcon.com/</homepage>
+	<version>0.2.1</version>
+	<requires>
+		<livestreet>0.4.2</livestreet>
+		<plugins>
+		</plugins>
+	</requires>
+	<description>
+		<lang name="default">Allows the user to choose interface language.</lang>
+		<lang name="russian">Позволяет пользователю выбирать язык интерфейса.</lang>
+		<lang name="ukrainian">Дає користувачу можливість вибирати мову інтерфейсу.</lang>
+	</description>
+	<delegate>
+		<module></module>
+		<action></action>
+		<template></template>
+		<entity></entity>
+	</delegate>
 </plugin>

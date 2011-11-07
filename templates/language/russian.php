@@ -18,10 +18,11 @@ return array(
 
     'l10n_its_translate_article' => 'Это перевод публикации',
 
-    'l10n_topic_translate' => 'Перевести',
+    'l10n_topic_translate' => 'Добавить перевод',
     'l10n_topic_translations' => 'Переводы',
     'l10n_topic_original' => 'Оригинал',
     'l10n_topic_translate_not_original' => 'Невозможно добавить перевод к переводу',
+    'l10n_available_translates_error' => 'Доступные языки для перевода отсутствуют',
     'l10n_topic_translate_not_exist' => 'Переводимый топик не существует',
     'l10n_topic_translate_lang_error' => 'Язык перевода совпадает с языком топика',
 
