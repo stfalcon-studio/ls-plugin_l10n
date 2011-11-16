@@ -11,8 +11,7 @@ class PluginL10n_HookTopic extends Hook
      *
      * @return void
      */
-    public function RegisterHook()
-    {
+    public function RegisterHook() {
         // хук на страницу редактирования топика
         $this->AddHook('topic_edit_show', 'TopicEditShow', __CLASS__);
         // хук на проверку правильности заполнения полей топика
@@ -25,22 +24,15 @@ class PluginL10n_HookTopic extends Hook
         $this->AddHook('topic_add_show', 'TopicAddShow', __CLASS__);
 
         // хук на форму добавления/редактирования топика
-        $this->AddHook('template_form_add_topic_topic_begin',
-                'TemplateFormAddTopicBegin', __CLASS__);
-        $this->AddHook('template_form_add_topic_topic_end',
-                'TemplateFormAddTopicEnd', __CLASS__);
+        $this->AddHook('template_form_add_topic_topic_begin', 'TemplateFormAddTopicBegin', __CLASS__);
+        $this->AddHook('template_form_add_topic_topic_end', 'TemplateFormAddTopicEnd', __CLASS__);
         // хук на форму добавления/редактирования опроса
-        $this->AddHook('template_form_add_topic_question_begin',
-                'TemplateFormAddTopicBegin', __CLASS__);
-        $this->AddHook('template_form_add_topic_question_end',
-                'TemplateFormAddTopicEnd', __CLASS__);
+        $this->AddHook('template_form_add_topic_question_begin', 'TemplateFormAddTopicBegin', __CLASS__);
+        $this->AddHook('template_form_add_topic_question_end', 'TemplateFormAddTopicEnd', __CLASS__);
         // хук на форму добавления/редактирования ссылки
-        $this->AddHook('template_form_add_topic_link_begin',
-                'TemplateFormAddTopicBegin', __CLASS__);
-        $this->AddHook('template_form_add_topic_link_end',
-                'TemplateFormAddTopicEnd', __CLASS__);
-        $this->AddHook('template_html_head_end',
-                'TemplateHtmlHeadEnd', __CLASS__);
+        $this->AddHook('template_form_add_topic_link_begin', 'TemplateFormAddTopicBegin', __CLASS__);
+        $this->AddHook('template_form_add_topic_link_end', 'TemplateFormAddTopicEnd', __CLASS__);
+        $this->AddHook('template_html_head_end', 'TemplateHtmlHeadEnd', __CLASS__);
     }
 
     /**
@@ -49,8 +41,7 @@ class PluginL10n_HookTopic extends Hook
      *
      * @param array $aData
      */
-    public function TopicEditShow($aData)
-    {
+    public function TopicEditShow($aData) {
         $oTopic = $aData['oTopic'];
 
         if (!isset($_REQUEST['submit_topic_publish']) and !isset($_REQUEST['submit_topic_save'])) {
@@ -67,8 +58,7 @@ class PluginL10n_HookTopic extends Hook
      *
      * @param array $aData
      */
-    public function TopicAddShow()
-    {
+    public function TopicAddShow() {
         if (!(Router::GetActionEvent() == 'add' && Router::GetParam(0) == 'translate')) {
             return;
         }
@@ -100,8 +90,7 @@ class PluginL10n_HookTopic extends Hook
      * @param array $aData
      * @return void
      */
-    public function TopicAddAfter($aData)
-    {
+    public function TopicAddAfter($aData) {
         $oTopic = $aData['oTopic'];
 
         if ($oTopicOriginal = $this->_getTopicOriginalByUrParams()) {
@@ -117,8 +106,7 @@ class PluginL10n_HookTopic extends Hook
      *
      * @param array $aData
      */
-    public function TopicShow($aData)
-    {
+    public function TopicShow($aData) {
         $oTopic = $aData['oTopic'];
 
         if ($this->PluginL10n_L10n_GetLangAliasFromUrl() != $this->PluginL10n_L10n_GetAliasByLang($oTopic->getTopicLang())) {
@@ -128,26 +116,26 @@ class PluginL10n_HookTopic extends Hook
             $this->Viewer_Assign('sCanonicalUrl', $sCanonicalUrl);
         }
 
+        // Разрешен ли перевод топика
+        $bShowTranslationBlock = $this->_IsAllowTopicTranslation($oTopic);
+
+        $this->Viewer_Assign('bAllowTopicTranslation', $bShowTranslationBlock);
+
         if ($oTopic->getTopicOriginalId()) {
             // подгружаем оригинал топика
             $this->Viewer_Assign('oTopicOriginal', $this->Topic_GetTopicById($oTopic->getTopicOriginalId()));
-            $this->_addTranslationBlock();
+            $bShowTranslationBlock = true;
         } else {
             // подгружаем переводы топика
             $aResult = $this->Topic_GetTopicTranslatesByTopicId($oTopic->getId());
-            if ($aTopics = $aResult['collection']) {
-                $this->_addTranslationBlock();
+            if ($aResult['collection']) {
+                $this->Viewer_Assign('aTopicTranslates', $aResult['collection']);
+                $bShowTranslationBlock = true;
             }
-
-            $this->Viewer_Assign('aTopicTranslates', $aTopics);
         }
-        if ($this->_IsAllowTopicTranslation($oTopic)) {
-            $this->Viewer_AddBlock(
-                    'right',
-                    'L10nCreateTranslation',
-                    array('plugin' => 'l10n'),
-                    500
-            );
+
+        if ($bShowTranslationBlock) {
+            $this->_addTranslationBlock();
         }
     }
 
@@ -156,8 +144,7 @@ class PluginL10n_HookTopic extends Hook
      *
      * @return boolean
      */
-    public function CheckTopicFields($aData)
-    {
+    public function CheckTopicFields($aData) {
         $btnOk = &$aData['bOk'];
 
         if (Router::GetActionEvent() == 'add' && Router::GetParam(0) == 'translate') {
@@ -173,24 +160,21 @@ class PluginL10n_HookTopic extends Hook
             $sTopicLang = getRequest('topic_lang', null, 'post');
             if (!$this->PluginL10n_L10n_IsAllowedLang($sTopicLang)) {
                 $this->Message_AddError(
-                        $this->Lang_Get('l10n_unavaliable_lang'),
-                        $this->Lang_Get('error'));
+                        $this->Lang_Get('l10n_unavaliable_lang'), $this->Lang_Get('error'));
                 $btnOk = false;
             }
 
             // проверка или язык топика-перевода не совпадает с языком топика-оригинала
             if ($sTopicLang == $oTopicOriginal->getTopicLang()) {
                 $this->Message_AddError(
-                        $this->Lang_Get('l10n_topic_translate_lang_error'),
-                        $this->Lang_Get('error'));
+                        $this->Lang_Get('l10n_topic_translate_lang_error'), $this->Lang_Get('error'));
                 $btnOk = false;
             }
 
             // проверка или топик-оригинал сам не является топиком-переводом
             if ($oTopicOriginal->getTopicOriginalId()) {
                 $this->Message_AddErrorSingle(
-                        $this->Lang_Get('l10n_topic_translate_not_original'),
-                        $this->Lang_Get('error'));
+                        $this->Lang_Get('l10n_topic_translate_not_original'), $this->Lang_Get('error'));
                 $btnOk = false;
             }
         }
@@ -203,8 +187,7 @@ class PluginL10n_HookTopic extends Hook
      *
      * @return ModuleTopic_EntityTopic|null
      */
-    private function _getTopicOriginalByUrParams()
-    {
+    private function _getTopicOriginalByUrParams() {
         if (Router::GetActionEvent() == 'edit') {
             $oTopic = $this->Topic_GetTopicById(Router::GetParam(0));
             if ($oTopic->getTopicOriginalId()) {
@@ -223,8 +206,7 @@ class PluginL10n_HookTopic extends Hook
      *
      * @return string
      */
-    public function TemplateFormAddTopicBegin()
-    {
+    public function TemplateFormAddTopicBegin() {
         if ($oTopicOriginal = $this->_getTopicOriginalByUrParams()) {
             return '<div class="infomessage">' . $this->Lang_Get('l10n_its_translate_article') . ' "<a href="' . $oTopicOriginal->getUrl() . '">' . $oTopicOriginal->getTitle() . '</a>"</div><br />';
         }
@@ -235,8 +217,7 @@ class PluginL10n_HookTopic extends Hook
      *
      * @return string
      */
-    public function TemplateHtmlHeadEnd()
-    {
+    public function TemplateHtmlHeadEnd() {
         $sTemplatePath = Plugin::GetTemplatePath(__CLASS__) . 'link_canonical.tpl';
         if ($this->Viewer_TemplateExists($sTemplatePath)) {
             return $this->Viewer_Fetch($sTemplatePath);
@@ -248,16 +229,27 @@ class PluginL10n_HookTopic extends Hook
      *
      * @return string
      */
-    public function TemplateFormAddTopicEnd()
-    {
-        $sExcludeLang = null;
+    public function TemplateFormAddTopicEnd() {
+
+        $aExcludeLangs = null;
         // нужно определить является топик переводом или нет
         if ($oTopicOriginal = $this->_getTopicOriginalByUrParams()) {
-            $sExcludeLang = $oTopicOriginal->getTopicLang();
+            $aExcludeLangs[] = $oTopicOriginal->getTopicLang();
+            if ($aTopicTranslations = $this->Topic_GetTopicTranslatesByTopicId($oTopicOriginal->getId())) {
+                foreach ($aTopicTranslations['collection'] as $oTopicTranslation) {
+                    $aExcludeLangs[] = $oTopicTranslation->getLang();
+                }
+            }
         }
 
         // для топика-перевода убираем с списка языков язык топика-оригинала
-        $this->Viewer_Assign('aLangs', $this->PluginL10n_L10n_GetAllowedLangsToViewer($sExcludeLang));
+        $aLangs = $this->PluginL10n_L10n_GetAllowedLangsToViewer($aExcludeLangs);
+        if (empty($aLangs)) {
+            $this->Message_AddError(
+                    $this->Lang_Get('l10n_available_translates_error'), $this->Lang_Get('error'), true);
+            Router::Location($oTopicOriginal->getUrl());
+        }
+        $this->Viewer_Assign('aLangs', $aLangs);
         return $this->Viewer_Fetch(Plugin::GetTemplatePath('l10n') . 'actions/ActionTopic/form_element_select_lang.tpl');
     }
 
@@ -265,8 +257,7 @@ class PluginL10n_HookTopic extends Hook
      * Проверяем, разрешено ли пользователю создавать перевод
      * @return boolean
      */
-    protected function _IsAllowTranslation()
-    {
+    protected function _IsAllowTranslation() {
         if (!$oUser = $this->User_GetUserCurrent()) {
             return false;
         }
@@ -281,14 +272,20 @@ class PluginL10n_HookTopic extends Hook
      * @param ModuleTopic_EntityTopic $oTopic
      * @return boolean
      */
-    protected function _IsAllowTopicTranslation($oTopic)
-    {
+    protected function _IsAllowTopicTranslation($oTopic) {
         if ($oTopic->getTopicOriginalId()) {
             return false;
         }
 
-        $aResult = $this->Topic_GetTopicTranslatesByTopicId($oTopic->getId());
-        $aLang = $this->PluginL10n_ModuleL10n_GetAllowedLangsToViewer($oTopic->getTopicLang());
+        $aExcludeLangs = array($oTopic->getTopicLang());
+
+        if ($aResult = $this->Topic_GetTopicTranslatesByTopicId($oTopic->getId())) {
+            foreach ($aResult['collection'] as $oTopicTranslation) {
+                $aExcludeLangs[] = $oTopicTranslation->getLang();
+            }
+        }
+
+        $aLang = $this->PluginL10n_ModuleL10n_GetAllowedLangsToViewer($aExcludeLangs);
 
         if (count($aLang) > $aResult['count']) {
             return $this->_IsAllowTranslation();
@@ -296,14 +293,10 @@ class PluginL10n_HookTopic extends Hook
         return false;
     }
 
-    protected function _addTranslationBlock()
-    {
+    protected function _addTranslationBlock() {
         if ($priority = Config::Get('plugin.l10n.translate_block.priority')) {
             $this->Viewer_AddBlock(
-                    'right',
-                    'L10nTranslation',
-                    array('plugin' => 'l10n'),
-                    $priority
+                    'right', 'L10nTranslation', array('plugin' => 'l10n'), $priority
             );
         }
     }

@@ -15,6 +15,9 @@
     </div>
     {/foreach}
 </div>
+<script type="text/javascript" src="{$sTemplateWebPathPluginL10n}lib/external/MooTools_1.2/mootools-1.2.4-more.js"></script>
+<script type="text/javascript" src="{$sTemplateWebPathPluginL10n}lib/external/MooTools_1.2/plugins/TabPane/TabPane.js"></script>
+<link rel="stylesheet" type="text/css" href="{$sTemplateWebPathPluginL10n}lib/external/MooTools_1.2/plugins/TabPane/style.css" media="all" />
 {literal}
 <script type="text/javascript">
     var myTabPane = new TabPane('blog-l10n', {tabSelector: 'li', contentSelector: 'div'});

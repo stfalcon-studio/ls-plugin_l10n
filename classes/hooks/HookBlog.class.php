@@ -42,13 +42,6 @@ class PluginL10n_HookBlog extends Hook {
 
         // подключение js плагина и стилей для табов
         if (in_array($sEvent, array('edit', 'add'))) {
-            $this->Viewer_AppendScript(
-                    Plugin::GetTemplatePath(__CLASS__) . 'lib/external/MooTools_1.2/mootools-1.2.4-more.js');
-            $this->Viewer_AppendScript(
-                    Plugin::GetTemplatePath(__CLASS__) . 'lib/external/MooTools_1.2/plugins/TabPane/TabPane.js');
-            $this->Viewer_PrependStyle(
-                    Plugin::GetTemplatePath(__CLASS__) . 'lib/external/MooTools_1.2/plugins/TabPane/style.css');
-
             $this->Viewer_Assign('sCurrentLangText', 'l10n_lang_' . $sCurrentLang);
             $this->Viewer_Assign('aLangs', $this->PluginL10n_L10n_GetAllowedLangsToViewer($sCurrentLang));
         }
