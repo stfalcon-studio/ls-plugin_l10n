@@ -20,6 +20,9 @@ class PluginL10n_HookTopic extends Hook
         $this->AddHook('topic_show', 'TopicShow', __CLASS__);
 
         //хук на добавление перевода
+        $this->AddHook('topic_add_before', 'TopicAddBefore', __CLASS__);
+		$this->AddHook('topic_edit_before', 'TopicAddBefore', __CLASS__);
+
         $this->AddHook('topic_add_after', 'TopicAddAfter', __CLASS__);
         $this->AddHook('topic_add_show', 'TopicAddShow', __CLASS__);
 
@@ -33,6 +36,18 @@ class PluginL10n_HookTopic extends Hook
         $this->AddHook('template_form_add_topic_link_begin', 'TemplateFormAddTopicBegin', __CLASS__);
         $this->AddHook('template_form_add_topic_link_end', 'TemplateFormAddTopicEnd', __CLASS__);
         $this->AddHook('template_html_head_end', 'TemplateHtmlHeadEnd', __CLASS__);
+    }
+
+    /**
+     * Перед добавлением топика в БД указываем его язык
+     *
+     * @param array $aData
+     * @return void
+     */
+    public function TopicAddBefore($aData)
+    {
+        $oTopic = $aData['oTopic'];
+        $oTopic->setTopicLang(getRequest('topic_lang'));
     }
 
     /**

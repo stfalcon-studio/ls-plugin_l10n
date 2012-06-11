@@ -65,28 +65,6 @@ class PluginL10n_ModuleTopic extends PluginL10n_Inherit_ModuleTopic
     }
 
     /**
-     * Добавляет топик
-     *
-     * @param ModuleTopic_EntityTopic $oTopic
-     * @return boolean|ModuleTopic_EntityTopic
-     */
-    public function AddTopic(ModuleTopic_EntityTopic $oTopic) {
-        $oTopic->setTopicLang(getRequest('topic_lang'));
-        return parent::AddTopic($oTopic);
-    }
-
-    /**
-     * Обновляет топик
-     *
-     * @param ModuleTopic_EntityTopic $oTopic
-     * @return boolean|ModuleTopic_EntityTopic
-     */
-    public function UpdateTopic(ModuleTopic_EntityTopic $oTopic) {
-        $oTopic->setTopicLang(getRequest('topic_lang'));
-        return parent::UpdateTopic($oTopic);
-    }
-
-    /**
      * Получает список тегов из топиков открытых блогов (open,personal) с учетом языка сайта
      *
      * @param  int $iLimit
@@ -233,7 +211,7 @@ class PluginL10n_ModuleTopic extends PluginL10n_Inherit_ModuleTopic
         $aBlogUsersResult = $this->Blog_GetBlogUsersByBlogId($oBlog->getId());
 
         $aBlogUsers = $aBlogUsersResult['collection'];
-        
+
         foreach ($aBlogUsers as $oBlogUser) {
             if ($oBlogUser->getUserId() == $oUserTopic->getId()) {
                 continue;
