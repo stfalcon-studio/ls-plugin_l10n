@@ -33,12 +33,12 @@ class PluginL10n_HookL10n extends Hook
             // берем язык интерфейса с урла
             Config::Set('lang.current', $this->PluginL10n_L10n_GetLangFromUrl());
         } elseif ($this->User_IsAuthorization()) {
-            // если в урле пусто - 
+            // если в урле пусто -
             // для авторизированных пользователей проверяем какой язык интерфейса
             // выбран по умолчанию и устанавливаем его в качестве текущего
             $oUser = $this->User_GetUserCurrent();
             Config::Set('lang.current', $oUser->getUserLang());
-        } elseif (isset($_SERVER['REMOTE_ADDR'])) {
+        } elseif (isset($_SERVER['REMOTE_ADDR']) && Config::Get('plugin.l10n.use_geoip')) {
             // для остальных язык будет передаваться по GeoIP
             require_once Plugin::GetPath(__CLASS__) . 'classes/lib/external/GeoIp/Wrapper.php';
             $gi = new GeoIp_Wrapper();
@@ -62,6 +62,8 @@ class PluginL10n_HookL10n extends Hook
 //                Config::Set('lang.current', $this->PluginL10n_L10n_GetLangByAlias('en'));
 //                //   setlocale(LC_ALL, "en_EN.UTF-8");
 //            }
+        } else {
+            Config::Set('lang.current', Config::Get('lang.default'));
         }
         $sLang = $this->PluginL10n_L10n_GetAliasByLang(Config::Get('lang.current'));
         $sWebPath = Router::GetPathWebCurrent();
@@ -78,7 +80,7 @@ class PluginL10n_HookL10n extends Hook
             }
             $this->PluginL10n_L10n_SetLangForUrl($sLang);
         }
-        
+
         $sConfigFile = Config::Get('path.root.server') . '/config/plugins/l10n/config.' .$sLang . '.php';
         if (file_exists($sConfigFile)) {
             Config::LoadFromFile($sConfigFile);
@@ -117,11 +119,11 @@ class PluginL10n_HookL10n extends Hook
             }
         }
     }
-    
+
     /**
      * Check is request is ajax
-     * 
-     * @return boolean 
+     *
+     * @return boolean
      */
     protected function isAjax()
     {
@@ -132,14 +134,14 @@ class PluginL10n_HookL10n extends Hook
         if (isset($_SERVER['X-Requested-With']) && $_SERVER['X-Requested-With'] == 'XMLHttpRequest') {
             $bRet = true;
         }
-        
+
         /**
          * Котеровская либа
          */
         if (getRequest('JsHttpRequest')) {
             $bRet = true;
         }
-        
+
         return $bRet;
     }
 }
