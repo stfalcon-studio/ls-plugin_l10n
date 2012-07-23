@@ -59,4 +59,5 @@ foreach ($aAllowedLangsAliases as $sLangAlias) {
 }
 Config::Set('router.uri', $aRouterUri);
 
+$config['use_geoip'] = false;
 return $config;
