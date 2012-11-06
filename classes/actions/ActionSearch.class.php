@@ -17,7 +17,7 @@ class PluginL10n_ActionSearch extends Action
         $this->sTypesEnabled['topics']['topic_lang'] = $this->_getLangId();
         $this->sTypesEnabled['comments']['comment_topic_lang'] = $this->_getLangId();
         $this->SetDefaultEvent('index');
-        $this->Viewer_AddHtmlTitle($this->Lang_Get('search'));
+        $this->Viewer_AddHtmlTitle($this->Lang_Get('plugin.l10n.search'));
     }
 
     protected function RegisterEvent()
@@ -51,7 +51,7 @@ class PluginL10n_ActionSearch extends Action
         $aReq = $this->PrepareRequest();
         $aRes = $this->PrepareResults($aReq, Config::Get('module.topic.per_page'));
         if (FALSE === $aRes) {
-            $this->Message_AddErrorSingle($this->Lang_Get('system_error'));
+            $this->Message_AddErrorSingle($this->Lang_Get('plugin.l10n.system_error'));
             return Router::Action('error');
         }
         /**
@@ -96,7 +96,7 @@ class PluginL10n_ActionSearch extends Action
         $aReq = $this->PrepareRequest();
         $aRes = $this->PrepareResults($aReq, Config::Get('module.comment.per_page'));
         if (FALSE === $aRes) {
-            $this->Message_AddErrorSingle($this->Lang_Get('system_error'));
+            $this->Message_AddErrorSingle($this->Lang_Get('plugin.l10n.system_error'));
             return Router::Action('error');
         }
 //        var_dump($aRes); exit;

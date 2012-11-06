@@ -5,7 +5,7 @@ Config::Set('db.table.blog_l10n', '___db.table.prefix___blog_l10n');
 $config = array();
 
 // список доступных языков (для разных языковых версий сайта)
-$config['allowed_langs'] = array('ukrainian', 'russian', 'english');
+$config['allowed_langs'] = array('russian', 'english');
 
 // ключ - язык в урл, значение - папка языка в livestreet
 // коды языков взяты из вики http://ru.wikipedia.org/wiki/%D0%9A%D0%BE%D0%B4%D1%8B_%D1%8F%D0%B7%D1%8B%D0%BA%D0%BE%D0%B2

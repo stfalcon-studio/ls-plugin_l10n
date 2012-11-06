@@ -100,8 +100,7 @@ class PluginL10n_HookL10n extends Hook
             );
         }
 
-        $this->Viewer_PrependStyle(
-        Plugin::GetTemplateWebPath(__CLASS__) . 'css/style.css');
+        $this->Viewer_PrependStyle(Plugin::GetTemplateWebPath(__CLASS__) . 'css/style.css');
     }
 
     public function UpdateBlockRoutes()
