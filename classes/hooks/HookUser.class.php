@@ -19,7 +19,7 @@ class PluginL10n_HookUser extends Hook
         $this->AddHook('template_form_registration_end',
                 'TemplateFormRegistrationEnd', __CLASS__);
         // хук на меню настроек пользователя
-        $this->AddHook('template_menu_settings', 'TemplateMenuSettings', __CLASS__);
+        $this->AddHook('template_menu_settings_settings_item', 'TemplateMenuSettings', __CLASS__);
     }
 
     /**

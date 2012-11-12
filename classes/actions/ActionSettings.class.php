@@ -30,8 +30,7 @@ class PluginL10n_ActionSettings extends PluginL10n_Inherit_ActionSettings
             if ($this->PluginL10n_User_UpdateUserLang($this->oUserCurrent)) {
                 // меняем язык текущей сесии
                 $this->Lang_SetLang($this->oUserCurrent->getUserLang());
-
-                $this->Message_AddNoticeSingle($this->Lang_Get('l10n_settings_submit_ok'));
+                $this->Message_AddNoticeSingle($this->Lang_Get('plugin.l10n.l10n_settings_submit_ok'));
             } else {
                 $this->Message_AddErrorSingle($this->Lang_Get('system_error'));
             }

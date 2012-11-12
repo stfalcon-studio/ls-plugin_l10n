@@ -35,6 +35,10 @@ class PluginL10n_HookTopic extends Hook
         // хук на форму добавления/редактирования ссылки
         $this->AddHook('template_form_add_topic_link_begin', 'TemplateFormAddTopicBegin', __CLASS__);
         $this->AddHook('template_form_add_topic_link_end', 'TemplateFormAddTopicEnd', __CLASS__);
+        // хук на форму добавления/редактирования фотосета
+        $this->AddHook('template_form_add_topic_photoset_begin', 'TemplateFormAddTopicBegin', __CLASS__);
+        $this->AddHook('template_form_add_topic_photoset_end', 'TemplateFormAddTopicEnd', __CLASS__);
+        
         $this->AddHook('template_html_head_end', 'TemplateHtmlHeadEnd', __CLASS__);
     }
 
@@ -81,13 +85,13 @@ class PluginL10n_HookTopic extends Hook
             // проверка на попытку добавить перевод к переводу
             if ($oTopicOriginal->getTopicOriginalId()) {
                 $this->Message_AddErrorSingle(
-                        $this->Lang_Get('l10n_topic_translate_not_original'), $this->Lang_Get('error'));
+                        $this->Lang_Get('plugin.l10n.l10n_topic_translate_not_original'), $this->Lang_Get('error'));
                 return;
             }
 
             if (!$this->_IsAllowTopicTranslation($oTopicOriginal)) {
                 $this->Message_AddErrorSingle(
-                        $this->Lang_Get('l10n_topic_translate_not_exist'), $this->Lang_Get('error'));
+                        $this->Lang_Get('plugin.l10n.l10n_topic_translate_not_exist'), $this->Lang_Get('error'));
                 return;
             }
 
@@ -95,7 +99,7 @@ class PluginL10n_HookTopic extends Hook
             $_REQUEST['blog_id'] = $oTopicOriginal->getBlogId();
         } else {
             $this->Message_AddErrorSingle(
-                    $this->Lang_Get('l10n_topic_translate_not_exist'), $this->Lang_Get('error'));
+                    $this->Lang_Get('plugin.l10n.l10n_topic_translate_not_exist'), $this->Lang_Get('error'));
         }
     }
 
@@ -165,7 +169,7 @@ class PluginL10n_HookTopic extends Hook
         if (Router::GetActionEvent() == 'add' && Router::GetParam(0) == 'translate') {
             if (!$oTopicOriginal = $this->_getTopicOriginalByUrParams()) {
                 $this->Message_AddError(
-                        $this->Lang_Get('l10n_topic_translate_not_exist'), $this->Lang_Get('error'));
+                        $this->Lang_Get('plugin.l10n.l10n_topic_translate_not_exist'), $this->Lang_Get('error'));
                 $btnOk = false;
             }
         }
@@ -175,21 +179,21 @@ class PluginL10n_HookTopic extends Hook
             $sTopicLang = getRequest('topic_lang', null, 'post');
             if (!$this->PluginL10n_L10n_IsAllowedLang($sTopicLang)) {
                 $this->Message_AddError(
-                        $this->Lang_Get('l10n_unavaliable_lang'), $this->Lang_Get('error'));
+                        $this->Lang_Get('plugin.l10n.l10n_unavaliable_lang'), $this->Lang_Get('error'));
                 $btnOk = false;
             }
 
             // проверка или язык топика-перевода не совпадает с языком топика-оригинала
             if ($sTopicLang == $oTopicOriginal->getTopicLang()) {
                 $this->Message_AddError(
-                        $this->Lang_Get('l10n_topic_translate_lang_error'), $this->Lang_Get('error'));
+                        $this->Lang_Get('plugin.l10n.l10n_topic_translate_lang_error'), $this->Lang_Get('error'));
                 $btnOk = false;
             }
 
             // проверка или топик-оригинал сам не является топиком-переводом
             if ($oTopicOriginal->getTopicOriginalId()) {
                 $this->Message_AddErrorSingle(
-                        $this->Lang_Get('l10n_topic_translate_not_original'), $this->Lang_Get('error'));
+                        $this->Lang_Get('plugin.l10n.l10n_topic_translate_not_original'), $this->Lang_Get('error'));
                 $btnOk = false;
             }
         }
@@ -223,7 +227,7 @@ class PluginL10n_HookTopic extends Hook
      */
     public function TemplateFormAddTopicBegin() {
         if ($oTopicOriginal = $this->_getTopicOriginalByUrParams()) {
-            return '<div class="infomessage">' . $this->Lang_Get('l10n_its_translate_article') . ' "<a href="' . $oTopicOriginal->getUrl() . '">' . $oTopicOriginal->getTitle() . '</a>"</div><br />';
+            return '<div class="infomessage">' . $this->Lang_Get('plugin.l10n.l10n_its_translate_article') . ' "<a href="' . $oTopicOriginal->getUrl() . '">' . $oTopicOriginal->getTitle() . '</a>"</div><br />';
         }
     }
 
@@ -261,7 +265,7 @@ class PluginL10n_HookTopic extends Hook
         $aLangs = $this->PluginL10n_L10n_GetAllowedLangsToViewer($aExcludeLangs);
         if (empty($aLangs)) {
             $this->Message_AddError(
-                    $this->Lang_Get('l10n_available_translates_error'), $this->Lang_Get('error'), true);
+                    $this->Lang_Get('plugin.l10n.l10n_available_translates_error'), $this->Lang_Get('error'), true);
             Router::Location($oTopicOriginal->getUrl());
         }
         $this->Viewer_Assign('aLangs', $aLangs);
