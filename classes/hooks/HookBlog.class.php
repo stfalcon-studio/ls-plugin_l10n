@@ -84,7 +84,7 @@ class PluginL10n_HookBlog extends Hook {
             $oBlog = $aData['result'];
             $bPersonalBlog = true;
             $sOwnerLogin = (isset($aData['params'][0])) ? $aData['params'][0]->GetLogin() : '';
-            $sTitleText = $this->Lang_Get('plugin.l10n.blogs_personal_title') . ' ' . $sOwnerLogin;
+            $sTitleText = $this->Lang_Get('blogs_personal_title') . ' ' . $sOwnerLogin;
             $sDescriptionText = $this->Lang_Get('plugin.l10n.blogs_personal_description');
         }
 
@@ -112,7 +112,7 @@ class PluginL10n_HookBlog extends Hook {
 
             if ($bPersonalBlog) {
                 // для персонального блога формируется название вида "Blog by username"
-                $sTitleText = $this->Lang_Get('plugin.l10n.blogs_personal_title') . ' ' . $sOwnerLogin;
+                $sTitleText = $this->Lang_Get('blogs_personal_title') . ' ' . $sOwnerLogin;
                 $sDescriptionText = $this->Lang_Get('plugin.l10n.blogs_personal_description');
             } else {
                 $sTitleText = getRequest('blog_title' . '_' . $sLang, null, 'post');
