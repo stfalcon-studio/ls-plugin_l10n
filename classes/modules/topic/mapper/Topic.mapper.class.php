@@ -104,6 +104,11 @@ class PluginL10n_ModuleTopic_MapperTopic extends PluginL10n_Inherit_ModuleTopic_
     protected function buildFilter(array $aFilter)
     {
         $sWhere = parent::buildFilter($aFilter);
+        
+        $plugins = Engine::getInstance()->Plugin_GetActivePlugins();
+        if (!in_array('l10n', $plugins)) {
+            return $sWhere;
+        }
 
         if (isset($aFilter['topic_lang'])) {
             $sWhere.=" AND t.topic_lang = '" . $aFilter['topic_lang'] . "'";
