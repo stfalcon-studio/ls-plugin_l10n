@@ -85,7 +85,7 @@ class PluginL10n_HookBlog extends Hook {
             $bPersonalBlog = true;
             $sOwnerLogin = (isset($aData['params'][0])) ? $aData['params'][0]->GetLogin() : '';
             $sTitleText = $this->Lang_Get('blogs_personal_title') . ' ' . $sOwnerLogin;
-            $sDescriptionText = $this->Lang_Get('blogs_personal_description');
+            $sDescriptionText = $this->Lang_Get('plugin.l10n.blogs_personal_description');
         }
 
         $oBlog->setBlogLang($sCurrentLang);
@@ -113,7 +113,7 @@ class PluginL10n_HookBlog extends Hook {
             if ($bPersonalBlog) {
                 // для персонального блога формируется название вида "Blog by username"
                 $sTitleText = $this->Lang_Get('blogs_personal_title') . ' ' . $sOwnerLogin;
-                $sDescriptionText = $this->Lang_Get('blogs_personal_description');
+                $sDescriptionText = $this->Lang_Get('plugin.l10n.blogs_personal_description');
             } else {
                 $sTitleText = getRequest('blog_title' . '_' . $sLang, null, 'post');
                 $sDescriptionText = $this->Text_Parser(getRequest('blog_description' . '_' . $sLang, null, 'post'));
@@ -124,7 +124,7 @@ class PluginL10n_HookBlog extends Hook {
             $oBlog->setBlogDescriptionL10n($sDescriptionText);
             $oBlog->setBlogUrlL10n(getRequest('blog_url' . '_' . $sLang, null, 'post'));
             if (!$this->Blog_ReplaceBlogL10n($oBlog)) {
-                $this->Message_AddError($this->Lang_Get('system_error'), $this->Lang_Get('error'));
+                $this->Message_AddError($this->Lang_Get('plugin.l10n.system_error'), $this->Lang_Get('error'));
             }
         }
 
@@ -137,6 +137,7 @@ class PluginL10n_HookBlog extends Hook {
      * @return string
      */
     public function TemplateFormAddBlogBegin() {
+        $this->Viewer_PrependStyle(Plugin::GetTemplateWebPath(__CLASS__) . 'css/style.css');
         return $this->Viewer_Fetch(Plugin::GetTemplatePath('l10n') . 'actions/ActionBlog/form_add_blog_begin.tpl');
     }
 
