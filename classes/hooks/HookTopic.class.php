@@ -247,11 +247,22 @@ class PluginL10n_HookTopic extends Hook
     public function TemplateFormAddTopicEnd() {
 
         $aExcludeLangs = null;
+
+        $sCurrentTopicLang = '';
+        $oCurrentTopic = $this->Topic_GetTopicById(Router::GetParam(0));
+
+        if ($oCurrentTopic) {
+            $sCurrentTopicLang = $oCurrentTopic->getTopicLang();
+        }
+
         // нужно определить является топик переводом или нет
         if ($oTopicOriginal = $this->_getTopicOriginalByUrParams()) {
             $aExcludeLangs[] = $oTopicOriginal->getTopicLang();
             if ($aTopicTranslations = $this->Topic_GetTopicTranslatesByTopicId($oTopicOriginal->getId())) {
                 foreach ($aTopicTranslations['collection'] as $oTopicTranslation) {
+                    if ($sCurrentTopicLang == $oTopicTranslation->getLang()) {
+                        continue;
+                    }
                     $aExcludeLangs[] = $oTopicTranslation->getLang();
                 }
             }
