@@ -9,3 +9,78 @@
 
 ВАЖНО: Для правильной работы плагина, необходимо внести изменения в Router.class.php.
 Скопипуйте файл Router.class.php в директорию /engine/classes/ (заменив оригинальный файл).
+
+
+Или, над файлом .engine/classes/Router.class.php производим следующие действия:
+#1  Ищем:
+        static protected $oInstance=null;
+
+    Добавляем:
+    /************************* Plugin L10n ****************************/
+    static protected $sLang=null;
+
+    /**
+    * Возвращает язык сайта (если он указан в URL)
+    *
+    * @return string|null
+    */
+    static public function getLang() {
+      return self::$sLang;
+    }
+
+    /**
+    * Задает язык сайта
+    *
+    * @param string $sLang
+    * @return void
+    */
+    static public function setLang($sLang = null) {
+     self::$sLang = $sLang;
+    }
+    /*******************************************************************/
+
+
+#2  Ищем:
+    /**
+    * Формируем $sPathWebCurrent ДО применения реврайтов
+    */
+    self::$sPathWebCurrent=Config::Get('path.root.web')."/".join('/',$this->GetRequestArray($sReq));
+
+    Заменяем на:
+    /************************* Plugin L10n ****************************/
+    $aRequestUrl = $this->GetRequestArray($sReq);
+
+    /**
+    * Формируем $sPathWebCurrent ДО применения реврайтов
+    */
+    // self::$sPathWebCurrent=Config::Get('path.root.web')."/".join('/',$this->GetRequestArray($sReq));
+    self::$sPathWebCurrent = Config::Get('path.root.web') . "/" . join('/', $aRequestUrl);
+
+    if (isset($aRequestUrl[0]) && is_array(Config::Get('plugin.l10n.allowed_langs'))
+      && Engine::getInstance()->PluginL10n_L10n_IsAllowedLangAlias($aRequestUrl[0])) {
+
+      $this->setLang(array_shift($aRequestUrl));
+    }
+
+    // Rebuild URL without lang var
+    $sReq = join('/', $aRequestUrl);
+    unset($aRequestUrl);
+    /*******************************************************************/
+
+
+#3  Ищем:
+        static public function GetPath($action) {
+
+    Заменяем на:
+        static public function GetPath($action, $sLang = null) {
+
+
+#4  Ищем:
+        return rtrim(Config::Get('path.root.web'),'/')."/$sPage/";
+
+    Заменяем на:
+    /************************* Plugin L10n ****************************/
+    //	return rtrim(Config::Get('path.root.web'),'/')."/$sPage/";
+    if(!$sLang) $sLang = self::getLang();
+    return rtrim(Config::Get('path.root.web'), '/') . ($sLang ? "/{$sLang}" : '') . "/$sPage/";
+    /*******************************************************************/
