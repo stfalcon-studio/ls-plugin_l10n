@@ -9,9 +9,9 @@
 		<lang name="ukrainian">Веб студія stfalcon.com</lang>
 	</author>
 	<homepage>http://stfalcon.com/</homepage>
-	<version>0.3.0</version>
+	<version>0.3.1</version>
 	<requires>
-		<livestreet>0.4.2</livestreet>
+		<livestreet>0.5.1</livestreet>
 		<plugins>
 		</plugins>
 	</requires>
