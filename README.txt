@@ -33,7 +33,7 @@ v0.4.0
 
 v0.3.1
 - Исправены ошибки при переводе
-  [Скачать для LS v0.5.1](https://github.com/stfalcon-studio/ls-plugin_l10n/archive/v0.3.1.zip)
+- Это последняя версия, которая работает с LiveStreet v0.5.1. Скачать её можно по ссылке https://github.com/stfalcon-studio/ls-plugin_l10n/zipball/ls-v0.5.1
 
 v0.3.0
 
