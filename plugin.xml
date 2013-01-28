@@ -14,7 +14,7 @@
 		</plugins>
 	</requires>
 	<description>
-		<lang name="default">To create a multilingual website (different interface & topics languages)</lang>
+		<lang name="default">To create a multilingual website (different interface and topics languages)</lang>
 		<lang name="russian">Для создания мультиязычного сайта (разные языки интерфейса и записей)</lang>
 		<lang name="ukrainian">Для створення багатомовного сайта (різні мови інтерфейсів і публікацій)</lang>
 	</description>
