@@ -5,25 +5,17 @@
 	</name>
 	<author>
 		<lang name="default">Web studio stfalcon.com</lang>
-		<lang name="russian">Веб студия stfalcon.com</lang>
-		<lang name="ukrainian">Веб студія stfalcon.com</lang>
 	</author>
 	<homepage>http://stfalcon.com/</homepage>
-	<version>0.3.0</version>
+	<version>0.4.0</version>
 	<requires>
-		<livestreet>0.4.2</livestreet>
+		<livestreet>1.0</livestreet>
 		<plugins>
 		</plugins>
 	</requires>
 	<description>
-		<lang name="default">Allows the user to choose interface language.</lang>
-		<lang name="russian">Позволяет пользователю выбирать язык интерфейса.</lang>
-		<lang name="ukrainian">Дає користувачу можливість вибирати мову інтерфейсу.</lang>
+		<lang name="default">To create a multilingual website (different interface and topics languages)</lang>
+		<lang name="russian">Для создания мультиязычного сайта (разные языки интерфейса и записей)</lang>
+		<lang name="ukrainian">Для створення багатомовного сайта (різні мови інтерфейсів і публікацій)</lang>
 	</description>
-	<delegate>
-		<module></module>
-		<action></action>
-		<template></template>
-		<entity></entity>
-	</delegate>
 </plugin>
