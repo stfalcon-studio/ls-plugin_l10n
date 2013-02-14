@@ -20,7 +20,8 @@ class PluginL10n extends Plugin
 	public $aInherits = array(
 		'action' => array(
 			'ActionSettings' => '_ActionSettings',
-			'ActionSearch' => '_ActionSearch'
+			'ActionSearch' => '_ActionSearch',
+            'ActionBlog' => '_ActionBlog',
 		),
 		'module' => array(
 			'ModuleBlog' => '_ModuleBlog',
