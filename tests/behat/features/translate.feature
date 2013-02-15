@@ -8,19 +8,19 @@ Feature: L10n plugin standart features BDD
       Then I want to login as "admin"
 
       Given I am on "/en/blog/3.html"
-      And I should see in element "sidebar" values:
+      And I should see in element by css "sidebar" values:
         | value  |
         | /topic/add/translate/3" alt="Translate" title="Translate">Translate</a> |
 
       Given I am on "/en/topic/add/translate/3"
-      And I should see in element "content" values:
+      And I should see in element by css "content" values:
         | value  |
         | <option value="russian" |
         | Russian |
       And I should not see "<option value=\"english\">"
 
       Given I am on "/en/topic/edit/3"
-      And I should see in element "content" values:
+      And I should see in element by css "content" values:
         | value  |
         | <option value="russian" |
         | Russian |
