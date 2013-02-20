@@ -70,10 +70,10 @@ class PluginL10n_ModuleTopic extends PluginL10n_Inherit_ModuleTopic
      * @param  int $iLimit
      * @return array
      */
-    public function GetOpenTopicTags($iLimit) {
+    public function GetOpenTopicTags($iLimit, $iUserId=null) {
         $id = "tag_{$iLimit}_open" . (is_null($this->PluginL10n_L10n_GetLangForQuery()) ? '' : '_' . $this->PluginL10n_L10n_GetLangForQuery());
         if (false === ($data = $this->Cache_Get($id))) {
-            $data = $this->oMapperTopic->GetOpenTopicTags($iLimit, $this->PluginL10n_L10n_GetLangFromUrl());
+            $data = $this->oMapperTopic->GetOpenTopicTags($iLimit, $this->PluginL10n_L10n_GetLangFromUrl(), $iUserId);
             $this->Cache_Set($data, $id, array('topic_update', 'topic_new'), 60 * 60 * 24 * 3);
         }
         return $data;
@@ -125,31 +125,6 @@ class PluginL10n_ModuleTopic extends PluginL10n_Inherit_ModuleTopic
             $aFilter['blog_type'][] = 'close';
         }
         return parent::GetCountTopicsByFilter($aFilter);
-    }
-
-    /**
-     * Получает список топиков по юзеру (язык не учитываем)
-     *
-     * @param unknown_type $sUserId
-     * @param unknown_type $iPublish
-     * @param unknown_type $iPage
-     * @param unknown_type $iPerPage
-     * @return unknown
-     */
-    public function GetTopicsPersonalByUser($sUserId, $iPublish, $iPage, $iPerPage) {
-        $aFilter = array(
-            'topic_publish' => $iPublish,
-            'user_id' => $sUserId,
-            'blog_type' => array('open', 'personal'),
-        );
-        /**
-         * Если пользователь смотрит свой профиль, то добавляем в выдачу
-         * закрытые блоги в которых он состоит
-         */
-        if ($this->oUserCurrent && $this->oUserCurrent->getId() == $sUserId) {
-            $aFilter['blog_type'][] = 'close';
-        }
-        return parent::GetTopicsByFilter($aFilter, $iPage, $iPerPage);
     }
 
     /**

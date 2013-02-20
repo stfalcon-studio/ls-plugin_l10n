@@ -19,6 +19,8 @@ class PluginL10n_ActionSettings extends PluginL10n_Inherit_ActionSettings
     protected function EventL10n()
     {
         // сохраняем языковые настройки пользователя
+        $this->sMenuSubItemSelect='l10n';
+
         if (isPost('l10n_settings_submit')) {
             $this->Security_ValidateSendForm();
 
