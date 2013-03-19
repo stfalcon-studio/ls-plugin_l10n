@@ -128,6 +128,7 @@ class PluginL10n_ModuleTopic_MapperTopic extends PluginL10n_Inherit_ModuleTopic_
      *
      * @param integer $iLimit
      * @param null|string $sLang
+     * @param int iUserId параметр сортировки по ID пользователя
      * @return array
      */
     public function GetOpenTopicTags($iLimit, $sLang = null, $iUserId=null)
