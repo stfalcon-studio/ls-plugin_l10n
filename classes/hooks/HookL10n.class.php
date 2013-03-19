@@ -83,6 +83,7 @@ class PluginL10n_HookL10n extends Hook
             $this->PluginL10n_L10n_SetLangForUrl($sLang);
         }
 
+        //если переходим на главную, устанавливаем в урл тот же язык (чтобы языки не сбасывались на дефолтные)
         if ($sWebPath && !$this->isAjax() && isset($_SERVER['HTTP_REFERER']) && Router::GetAction() == 'index' && !Router::GetActionEvent()) {
             $sReq = preg_replace("/http:\/\//",'', $_SERVER['HTTP_REFERER']);
             $sReq = explode('/', $sReq);
