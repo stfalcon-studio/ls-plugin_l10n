@@ -4,6 +4,7 @@ php:
   - 5.3
 
 before_script:
+  - export DISPLAY=:99
   - mkdir -p /tmp/plugins/l10n
   - mv * /tmp/plugins/l10n
   - mkdir /tmp/ls && git clone git://github.com/stfalcon-studio/livestreet.git /tmp/ls
