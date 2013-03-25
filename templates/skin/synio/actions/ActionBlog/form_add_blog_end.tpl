@@ -1,4 +1,4 @@
-    {hook run='form_add_blog_content' aRequest=$_aRequest}
+    {hook run='form_add_blog_content' oBlog=$oBlog}
 
     </div>
     {foreach from=$aLangs key=sLangKey item=sLangText}
@@ -15,7 +15,7 @@
         <textarea class="input-wide markitup-editor" name="blog_description_{$sLangKey}" id="blog_description_{$sLangKey}" rows="20">{$_aRequest.$sLangKey[2]}</textarea><br />
         <span class="note">{$aLang.blog_create_description_notice}</span></p>
 
-        {hook run='form_add_blog_content_aditional' sLangKey=$sLangKey sLangText=$sLangText aRequest=$_aRequest}
+        {hook run='form_add_blog_content_aditional' sLangKey=$sLangKey sLangText=$sLangText oBlog=$oBlog}
 
     </div>
     {/foreach}
