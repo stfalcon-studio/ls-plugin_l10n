@@ -45,7 +45,7 @@ class PluginL10n_ModuleTopic extends PluginL10n_Inherit_ModuleTopic
     public function GetCountTopicsByFilter($aFilter)
     {
         // если администратор считаем количество вместе с неопубликоваными топиками других юзеров
-        if ($this->oUserCurrent->isAdministrator()) {
+        if ($this->oUserCurrent && $this->oUserCurrent->isAdministrator()) {
             $aFilter['translate_all'] = true;
         }
 
@@ -128,7 +128,7 @@ class PluginL10n_ModuleTopic extends PluginL10n_Inherit_ModuleTopic
         );
 
         // если администратор показвает неопубликованные черновики других пользователей
-        if ($this->oUserCurrent->isAdministrator() && !$iPublish) {
+        if ($this->oUserCurrent && $this->oUserCurrent->isAdministrator() && !$iPublish) {
                 $aFilter['translate_all'] = true;
         }
 
