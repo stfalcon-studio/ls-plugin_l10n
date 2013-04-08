@@ -138,9 +138,10 @@ class PluginL10n_ModuleTopic_MapperTopic extends PluginL10n_Inherit_ModuleTopic_
      *
      * @param integer $iLimit
      * @param null|string $sLang
+     * @param int iUserId задаем для выборки персональных тегов пользователя
      * @return array
      */
-    public function GetOpenTopicTags($iLimit, $sLang = null)
+    public function GetOpenTopicTags($iLimit, $sLang = null, $iUserId=null)
     {
         $sql = "SELECT
                         tt.topic_tag_text,
@@ -151,6 +152,7 @@ class PluginL10n_ModuleTopic_MapperTopic extends PluginL10n_Inherit_ModuleTopic_
                         " . Config::Get('db.table.topic') . " as t
                 WHERE
                         tt.blog_id = b.blog_id
+                        " . (is_null($iUserId) ? " " : " AND tt.user_id = '{$iUserId}' ") . "
                         AND b.blog_type NOT IN ('close')
                         AND t.topic_id = tt.topic_id
                         " . (is_null($sLang) ? "AND t.topic_original_id IS NULL" : "AND t.topic_lang = '$sLang'") . "

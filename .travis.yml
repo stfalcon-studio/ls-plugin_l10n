@@ -4,6 +4,7 @@ php:
   - 5.3
 
 before_script:
+  - export DISPLAY=:99
   - mkdir -p /tmp/plugins/l10n
   - mv * /tmp/plugins/l10n
   - mkdir /tmp/ls && git clone git://github.com/stfalcon-studio/livestreet.git /tmp/ls
@@ -43,7 +44,7 @@ before_script:
   - sleep 5
 
   # download and launch Selenium
-  - wget -O /tmp/selenium-server-standalone.jar http://selenium.googlecode.com/files/selenium-server-standalone-2.25.0.jar
+  - wget -O /tmp/selenium-server-standalone.jar http://selenium.dev.stfalcon.com/selenium-server-standalone-latest.jar
   - java -jar /tmp/selenium-server-standalone.jar > /dev/null &
   - sleep 5
 
