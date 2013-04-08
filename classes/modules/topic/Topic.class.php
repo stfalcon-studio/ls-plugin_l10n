@@ -44,6 +44,7 @@ class PluginL10n_ModuleTopic extends PluginL10n_Inherit_ModuleTopic
      */
     public function GetCountTopicsByFilter($aFilter)
     {
+        // если администратор считаем количество вместе с неопубликоваными топиками других юзеров
         if ($this->oUserCurrent->isAdministrator()) {
             $aFilter['translate_all'] = true;
         }
@@ -126,6 +127,7 @@ class PluginL10n_ModuleTopic extends PluginL10n_Inherit_ModuleTopic
             'blog_type' => array('open','personal'),
         );
 
+        // если администратор показвает неопубликованные черновики других пользователей
         if ($this->oUserCurrent->isAdministrator() && !$iPublish) {
                 $aFilter['translate_all'] = true;
         }
@@ -140,33 +142,6 @@ class PluginL10n_ModuleTopic extends PluginL10n_Inherit_ModuleTopic
         return parent::GetCountTopicsByFilter($aFilter);
     }
 
-    /**
-     * Получает список топиков по юзеру (язык не учитываем)
-     *
-     * @param unknown_type $sUserId
-     * @param unknown_type $iPublish
-     * @param unknown_type $iPage
-     * @param unknown_type $iPerPage
-     * @return unknown
-     */
-    public function GetTopicsPersonalByUser($sUserId, $iPublish, $iPage, $iPerPage) {
-        $aFilter = array(
-            'topic_publish' => $iPublish,
-            'user_id' => $sUserId,
-            'blog_type' => array('open', 'personal'),
-        );
-        /**
-         * Если пользователь смотрит свой профиль, то добавляем в выдачу
-         * закрытые блоги в которых он состоит
-         */
-        if ($this->oUserCurrent && $this->oUserCurrent->getId() == $sUserId) {
-            $aFilter['blog_type'][] = 'close';
-        }
-        return parent::GetTopicsByFilter($aFilter, $iPage, $iPerPage);
-    }
-
-    
-    
     /**
      * Получает топики по рейтингу и дате
      *
