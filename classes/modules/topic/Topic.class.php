@@ -202,4 +202,25 @@ class PluginL10n_ModuleTopic extends PluginL10n_Inherit_ModuleTopic
         }
     }
 
+    public function GetNestedTopics($oTopic)
+    {
+        $id = "nested_topic_" . $oTopic->GetId();
+
+        if (false === ($data = $this->Cache_Get($id))) {
+            if ($oTopic->getTopicOriginalId()) {
+                $aTopics = $this->GetTopicTranslatesByTopicId($oTopic->getTopicOriginalId());
+                if ($oTopicOriginal = $this->Topic_GetTopicById($oTopic->getTopicOriginalId())) {
+                    $aTopics['collection'][$oTopic->getTopicOriginalId()] = $oTopicOriginal;
+                }
+            } else {
+                $aTopics = $this->GetTopicTranslatesByTopicId($oTopic->getId());
+                $aTopics['collection'][$oTopic->getId()] = $oTopic;
+            }
+            $data = $aTopics['collection'];
+            $this->Cache_Set($data , $id, array('topic_update'), 60 * 60 * 24 * 2);
+        }
+
+        return $data;
+    }
+
 }
