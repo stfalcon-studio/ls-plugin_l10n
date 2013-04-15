@@ -26,6 +26,8 @@ class PluginL10n_HookL10n extends Hook
      */
     public function SetLang()
     {
+        $clearLang = Router::getLang();
+
         if (!$this->User_IsInit()) {
             $this->User_Init();
         }
@@ -79,6 +81,17 @@ class PluginL10n_HookL10n extends Hook
                 Router::Location($sWebPath);
             }
             $this->PluginL10n_L10n_SetLangForUrl($sLang);
+        }
+
+        //если переходим на главную, устанавливаем в урл тот же язык (чтобы языки не сбасывались на дефолтные)
+        if ($sWebPath && !$this->isAjax() && isset($_SERVER['HTTP_REFERER']) && Router::GetAction() == 'index' && !Router::GetActionEvent()) {
+            $sReq = preg_replace("/http:\/\//",'', $_SERVER['HTTP_REFERER']);
+            $sReq = explode('/', $sReq);
+
+            if (!$clearLang && isset($sReq[1]) && $this->PluginL10n_L10n_IsAllowedLangAlias($sReq[1])) {
+                Router::SetLang($sReq[1]);
+                Router::Location(Router::GetPath(Router::GetAction()));
+            }
         }
 
         $sConfigFile = Config::Get('path.root.server') . '/config/plugins/l10n/config.' .$sLang . '.php';

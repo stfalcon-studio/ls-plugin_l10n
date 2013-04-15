@@ -42,7 +42,13 @@ class PluginL10n_ModuleTopic extends PluginL10n_Inherit_ModuleTopic
      * @param array $aFilter
      * @return integer
      */
-    public function GetCountTopicsByFilter($aFilter) {
+    public function GetCountTopicsByFilter($aFilter)
+    {
+        // если администратор считаем количество вместе с неопубликоваными топиками других юзеров
+        if ($this->oUserCurrent && $this->oUserCurrent->isAdministrator()) {
+            $aFilter['translate_all'] = true;
+        }
+
         return parent::GetCountTopicsByFilter($this->_getModifiedFilter($aFilter));
     }
 
@@ -105,24 +111,33 @@ class PluginL10n_ModuleTopic extends PluginL10n_Inherit_ModuleTopic
     }
 
     /**
-     * Возвращает количество топиков которые создал юзер
+     * Получает список топиков по юзеру
      *
-     * @param unknown_type $sUserId
-     * @param unknown_type $iPublish
-     * @return unknown
+     * @param int $sUserId	ID пользователя
+     * @param int $iPublish	Флаг публикации топика
+     * @param int $iPage	Номер страницы
+     * @param int $iPerPage	Количество элементов на страницу
+     * @return array
      */
-    public function GetCountTopicsPersonalByUser($sUserId, $iPublish) {
+    public function GetTopicsPersonalByUser($sUserId,$iPublish,$iPage,$iPerPage)
+    {
         $aFilter = array(
             'topic_publish' => $iPublish,
             'user_id' => $sUserId,
-            'blog_type' => array('open', 'personal'),
+            'blog_type' => array('open','personal'),
         );
+
+        // если администратор показвает неопубликованные черновики других пользователей
+        if ($this->oUserCurrent && $this->oUserCurrent->isAdministrator() && !$iPublish) {
+                $aFilter['translate_all'] = true;
+        }
+
         /**
          * Если пользователь смотрит свой профиль, то добавляем в выдачу
          * закрытые блоги в которых он состоит
          */
-        if ($this->oUserCurrent && $this->oUserCurrent->getId() == $sUserId) {
-            $aFilter['blog_type'][] = 'close';
+        if($this->oUserCurrent && $this->oUserCurrent->getId()==$sUserId) {
+            $aFilter['blog_type'][]='close';
         }
         return parent::GetCountTopicsByFilter($aFilter);
     }

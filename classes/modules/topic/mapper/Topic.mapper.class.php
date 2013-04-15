@@ -101,9 +101,21 @@ class PluginL10n_ModuleTopic_MapperTopic extends PluginL10n_Inherit_ModuleTopic_
      * @param array $aFilter
      * @return string
      */
-    protected function buildFilter(array $aFilter)
+    protected function buildFilter($aFilter)
     {
+        $userId = 0;
+        // сохраняем ИД текущего пользователя, очищаем фильтр по 'user_id'
+        if (isset($aFilter['translate_all'])) {
+            $userId = isset($aFilter['user_id']) ? $aFilter['user_id'] : 0;
+            unset($aFilter['user_id']);
+        }
+
         $sWhere = parent::buildFilter($aFilter);
+
+        // добавяем свой фильтр для администраторов
+        if (isset($aFilter['translate_all'])) {
+            $sWhere.=" AND (t.user_id = '" . $userId . "' OR (t.topic_original_id IS NOT NULL AND t.topic_publish = 0))";
+        }
 
         //@todo temporary
         if (!in_array('l10n', Engine::getInstance()->Plugin_GetActivePlugins())) {
