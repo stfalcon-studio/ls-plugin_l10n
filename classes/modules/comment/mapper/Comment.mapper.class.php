@@ -87,4 +87,83 @@ class PluginL10n_ModuleComment_MapperComment extends PluginL10n_Inherit_ModuleCo
         return $aComments;
     }
 
+    /**
+     * Получить комменты по владельцу
+     *
+     * @param  int $sId	ID владельца коммента
+     * @param  string $sTargetType	Тип владельца комментария
+     * @return array
+     */
+    public function GetCommentsByTargetId($sId,$sTargetType)
+    {
+        $subQuery = "
+            SELECT _pp.topic_id
+            FROM ".Config::Get('db.table.topic')." AS _p
+            LEFT JOIN prefix_topic AS _pp ON _pp.topic_original_id = _p.topic_id
+                WHERE _p.topic_id IN (
+                    SELECT IFNULL(_px.topic_original_id, _px.topic_id)	FROM ".Config::Get('db.table.topic')." AS _px WHERE _px.topic_id = ?d
+                )
+            UNION
+            SELECT IFNULL(_px.topic_original_id, _px.topic_id)	FROM ".Config::Get('db.table.topic')." AS _px WHERE _px.topic_id = ?d
+        ";
+
+        if ($sTargetType != 'topic' || !Config::Get('plugin.l10n.allowed_collapse_comments')) {
+            $subQuery = '?d';
+        }
+
+        $sql = "SELECT
+                    comment_id,
+                    comment_id as ARRAY_KEY,
+                    comment_pid as PARENT_KEY
+                FROM
+                    ".Config::Get('db.table.comment')."
+                WHERE
+                    target_id IN (".$subQuery.")
+                    AND
+                    target_type = ?
+                ORDER by comment_id asc;
+                    ";
+
+        if ($sTargetType == 'topic' && Config::Get('plugin.l10n.allowed_collapse_comments')) {
+            if ($aRows=$this->oDb->select($sql,$sId,$sId,$sTargetType)) {
+                return $aRows;
+            }
+            return null;
+        }
+
+        if ($aRows=$this->oDb->select($sql,$sId,$sTargetType)) {
+            return $aRows;
+        }
+        return null;
+    }
+
+    public function GetCommentsNewByTargetId($sId,$sTargetType,$sIdCommentLast)
+    {
+        if (is_array($sId)) {
+            $query = 'target_id IN ('. implode($sId, ',').') #?d';
+        }
+        else {
+            $query = 'target_id = ?d';
+        }
+
+        $sql = "SELECT
+                    comment_id
+                FROM
+                    ".Config::Get('db.table.comment')."
+                WHERE
+                    {$query}
+                    AND
+                    target_type = ?
+                    AND
+                    comment_id > ?d
+                ORDER by comment_id asc;
+                    ";
+        $aComments=array();
+        if ($aRows=$this->oDb->select($sql,$sId,$sTargetType,$sIdCommentLast)) {
+            foreach ($aRows as $aRow) {
+                $aComments[]=$aRow['comment_id'];
+            }
+        }
+        return $aComments;
+    }
 }

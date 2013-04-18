@@ -117,6 +117,18 @@ class PluginL10n_HookTopic extends Hook
                 $this->Message_AddErrorSingle($this->Lang_Get('system_error'));
             }
         }
+
+        $oTopic = $this->Topic_GetTopicById($oTopic->GetTopicId());
+        if ($oTopic->GetTopicOriginalId()) {
+            $sCommentCount = 0;
+
+            foreach ($this->Topic_GetNestedTopics($oTopic) as $oTopicItem ) {
+                $sCommentCount +=  $oTopicItem->GetTopicCountComment();
+            }
+
+            $oTopic->setExtraData('collapsedCount', $sCommentCount);
+            $this->Topic_UpdateTopicContent($oTopic);
+        }
     }
 
     /**

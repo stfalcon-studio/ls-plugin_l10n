@@ -53,4 +53,49 @@ class PluginL10n_ModuleComment extends PluginL10n_Inherit_ModuleComment
         return $data;
     }
 
+    /**
+     * Получить новые комменты для владельца
+     *
+     * @param int $sId	ID владельца коммента
+     * @param string $sTargetType	Тип владельца комментария
+     * @param int $sIdCommentLast ID последнего прочитанного комментария
+     * @return array('comments'=>array,'iMaxIdComment'=>int)
+     */
+    public function GetCommentsNewByTargetId($sId,$sTargetType,$sIdCommentLast) {
+        if (false === ($aComments = $this->Cache_Get("comment_target_{$sId}_{$sTargetType}_{$sIdCommentLast}"))) {
+
+            if ( $sTargetType == 'topic' && Config::Get('plugin.l10n.allowed_collapse_comments')) {
+                $aNestedTopicsId =  array_keys($this->Topic_GetNestedTopics($this->Topic_GetTopicById($sId)));
+                $aComments=$this->oMapper->GetCommentsNewByTargetId($aNestedTopicsId,$sTargetType,$sIdCommentLast);
+            }
+            else {
+                $aComments=$this->oMapper->GetCommentsNewByTargetId($sId,$sTargetType,$sIdCommentLast);
+            }
+
+            $this->Cache_Set($aComments, "comment_target_{$sId}_{$sTargetType}_{$sIdCommentLast}", array("comment_new_{$sTargetType}_{$sId}"), 60*60*24*1);
+        }
+        if (count($aComments)==0) {
+            return array('comments'=>array(),'iMaxIdComment'=>0);
+        }
+
+        $iMaxIdComment=max($aComments);
+        $aCmts=$this->GetCommentsAdditionalData($aComments);
+        $oViewerLocal=$this->Viewer_GetLocalViewer();
+        $oViewerLocal->Assign('oUserCurrent',$this->User_GetUserCurrent());
+        $oViewerLocal->Assign('bOneComment',true);
+        if($sTargetType!='topic') {
+            $oViewerLocal->Assign('bNoCommentFavourites',true);
+        }
+        $aCmt=array();
+        foreach ($aCmts as $oComment) {
+            $oViewerLocal->Assign('oComment',$oComment);
+            $sText=$oViewerLocal->Fetch($this->GetTemplateCommentByTarget($sId,$sTargetType));
+            $aCmt[]=array(
+                'html' => $sText,
+                'obj'  => $oComment,
+            );
+        }
+        return array('comments'=>$aCmt,'iMaxIdComment'=>$iMaxIdComment);
+    }
+
 }

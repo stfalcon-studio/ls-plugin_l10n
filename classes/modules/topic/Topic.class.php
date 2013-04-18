@@ -128,6 +128,31 @@ class PluginL10n_ModuleTopic extends PluginL10n_Inherit_ModuleTopic
     }
 
     /**
+     * Получает список топиков по юзеру (язык не учитываем)
+     *
+     * @param unknown_type $sUserId
+     * @param unknown_type $iPublish
+     * @param unknown_type $iPage
+     * @param unknown_type $iPerPage
+     * @return unknown
+     */
+    public function GetTopicsPersonalByUser($sUserId, $iPublish, $iPage, $iPerPage) {
+        $aFilter = array(
+            'topic_publish' => $iPublish,
+            'user_id' => $sUserId,
+            'blog_type' => array('open', 'personal'),
+        );
+        /**
+         * Если пользователь смотрит свой профиль, то добавляем в выдачу
+         * закрытые блоги в которых он состоит
+         */
+        if ($this->oUserCurrent && $this->oUserCurrent->getId() == $sUserId) {
+            $aFilter['blog_type'][] = 'close';
+        }
+        return parent::GetTopicsByFilter($aFilter, $iPage, $iPerPage);
+    }
+
+    /**
      * Получает топики по рейтингу и дате
      *
      * @param unknown_type $sDate
@@ -200,6 +225,60 @@ class PluginL10n_ModuleTopic extends PluginL10n_Inherit_ModuleTopic
         if ($oBlog->getOwnerId() != $oUserTopic->getId()) {
             $this->Notify_SendTopicNewToSubscribeBlog($oBlog->getOwner(), $oTopic, $oBlog, $oUserTopic);
         }
+    }
+
+    public function GetNestedTopics($oTopic)
+    {
+        $id = "nested_topic_" . $oTopic->GetId();
+
+        if (false === ($data = $this->Cache_Get($id))) {
+            if ($oTopic->getTopicOriginalId()) {
+                $aTopics = $this->GetTopicTranslatesByTopicId($oTopic->getTopicOriginalId());
+                if ($oTopicOriginal = $this->Topic_GetTopicById($oTopic->getTopicOriginalId())) {
+                    $aTopics['collection'][$oTopic->getTopicOriginalId()] = $oTopicOriginal;
+                }
+            } else {
+                $aTopics = $this->GetTopicTranslatesByTopicId($oTopic->getId());
+                $aTopics['collection'][$oTopic->getId()] = $oTopic;
+            }
+            $data = $aTopics['collection'];
+            $this->Cache_Set($data , $id, array('topic_update'), 60 * 60 * 24 * 2);
+        }
+
+        return $data;
+    }
+
+    public function increaseTopicCountComment($sTopicId)
+    {
+        if (Config::Get('plugin.l10n.allowed_collapse_comments')) {
+            $oTopic = $this->Topic_GetTopicById($sTopicId);
+            $commentsCount = 0;
+            $aNestedTopics = $this->Topic_GetNestedTopics($oTopic);
+            foreach ($aNestedTopics as $oTopicItem) {
+                $commentsCount += $oTopicItem->getTopicCountComment();
+            }
+
+            foreach ($aNestedTopics as $oTopicItem) {
+                $oTopicItem->setExtraData('collapsedCount', $commentsCount + 1);
+                if ($oTopicItem->GetTopicId() == $sTopicId) {
+                    $oTopicItem->SetTopicCountComment($oTopicItem->GetTopicCountComment() + 1);
+                }
+                $this->Topic_UpdateTopic($oTopicItem);
+            }
+
+            return true;
+        }
+        else {
+            return parent::increaseTopicCountComment($sTopicId);
+        }
+    }
+
+    public function UpdateTopicContent($oTopic)
+    {
+        $this->Cache_Clean(Zend_Cache::CLEANING_MODE_MATCHING_TAG,array('topic_update',"topic_update_user_{$oTopic->getUserId()}"));
+        $this->Cache_Delete("topic_{$oTopic->getId()}");
+
+        return $this->oMapperTopic->UpdateContent($oTopic);
     }
 
 }

@@ -7,6 +7,9 @@ $config = array();
 // список доступных языков (для разных языковых версий сайта)
 $config['allowed_langs'] = array('russian', 'english');
 
+// Разрешить публиковать коментарии из топиков переводов
+$config['allowed_collapse_comments'] = true;
+
 // ключ - язык в урл, значение - папка языка в livestreet
 // коды языков взяты из вики http://ru.wikipedia.org/wiki/%D0%9A%D0%BE%D0%B4%D1%8B_%D1%8F%D0%B7%D1%8B%D0%BA%D0%BE%D0%B2
 $config['langs_aliases'] = array(
