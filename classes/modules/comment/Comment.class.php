@@ -98,4 +98,23 @@ class PluginL10n_ModuleComment extends PluginL10n_Inherit_ModuleComment
         return array('comments'=>$aCmt,'iMaxIdComment'=>$iMaxIdComment);
     }
 
+
+    /**
+     * Добавляет коммент
+     *
+     * @param  ModuleComment_EntityComment $oComment	Объект комментария
+     * @return bool|ModuleComment_EntityComment
+     */
+    public function AddComment(ModuleComment_EntityComment $oComment)
+    {
+        if (Config::Get('plugin.l10n.allowed_collapse_comments') && $oComment->getTargetType() == 'topic') {
+            if ($oComment->GetCommentPid()) {
+                $oCommentParent = $this->Comment_GetCommentById($oComment->GetCommentPid());
+                $oComment->setTargetId($oCommentParent->getTargetId());
+                $oComment->setTargetParentId($oCommentParent->getTargetParentId());
+            }
+        }
+
+        return parent::AddComment($oComment);
+    }
 }
