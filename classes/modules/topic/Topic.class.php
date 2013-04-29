@@ -227,6 +227,13 @@ class PluginL10n_ModuleTopic extends PluginL10n_Inherit_ModuleTopic
         }
     }
 
+    /**
+     * get connected topics (parents or children)
+     *
+     * @param ModuleTopic_EntityTopic $oTopic
+     *
+     * @return array ModuleTopic_EntityTopic
+     */
     public function GetNestedTopics($oTopic)
     {
         $id = "nested_topic_" . $oTopic->GetId();
@@ -248,6 +255,13 @@ class PluginL10n_ModuleTopic extends PluginL10n_Inherit_ModuleTopic
         return $data;
     }
 
+    /**
+     * Increase topic comments counter by one
+     *
+     * @param int $sTopicId
+     *
+     * @return bool result
+     */
     public function increaseTopicCountComment($sTopicId)
     {
         if (Config::Get('plugin.l10n.allowed_collapse_comments')) {
@@ -273,6 +287,13 @@ class PluginL10n_ModuleTopic extends PluginL10n_Inherit_ModuleTopic
         }
     }
 
+    /**
+     * Update data in table topic_content
+     *
+     * @param ModuleTopic_EntityTopic $oTopic
+     *
+     * @return bool result
+     */
     public function UpdateTopicContent($oTopic)
     {
         $this->Cache_Clean(Zend_Cache::CLEANING_MODE_MATCHING_TAG,array('topic_update',"topic_update_user_{$oTopic->getUserId()}"));

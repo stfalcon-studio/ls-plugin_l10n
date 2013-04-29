@@ -269,7 +269,7 @@ class PluginL10n_ModuleTopic_MapperTopic extends PluginL10n_Inherit_ModuleTopic_
     }
 
     /**
-     * Update topic content table
+     * Update data in topic_content table (Bypassing the topic update operation)
      *
      * @param ModuleTopic_EntityTopic $oTopic
      *
