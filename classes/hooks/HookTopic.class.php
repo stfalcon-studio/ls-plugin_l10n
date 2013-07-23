@@ -126,7 +126,7 @@ class PluginL10n_HookTopic extends Hook
                 $sCommentCount +=  $oTopicItem->GetTopicCountComment();
             }
 
-            $oTopic->setExtraData('collapsedCount', $sCommentCount);
+            $oTopic->setCountCollapsedTopics($sCommentCount);
             $this->Topic_UpdateTopicContent($oTopic);
         }
     }

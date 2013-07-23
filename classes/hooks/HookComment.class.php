@@ -25,7 +25,7 @@ class PluginL10n_HookComment extends Hook {
     {
         if ($aData['sTargetType'] == 'topic') {
             $oTopic = $this->Topic_GetTopicById($aData['iTargetId']);
-            $commentCount = $oTopic->getExtraData('collapsedCount');
+            $commentCount = $oTopic->getCountCollapsedTopics();
 
             if (Config::Get('plugin.l10n.allowed_collapse_comments')) {
                 if ($commentCount !== null) {

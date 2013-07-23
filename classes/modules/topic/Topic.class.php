@@ -273,7 +273,7 @@ class PluginL10n_ModuleTopic extends PluginL10n_Inherit_ModuleTopic
             }
 
             foreach ($aNestedTopics as $oTopicItem) {
-                $oTopicItem->setExtraData('collapsedCount', $commentsCount + 1);
+                $oTopicItem->setCountCollapsedTopics($commentsCount + 1);
                 if ($oTopicItem->GetTopicId() == $sTopicId) {
                     $oTopicItem->SetTopicCountComment($oTopicItem->GetTopicCountComment() + 1);
                 }

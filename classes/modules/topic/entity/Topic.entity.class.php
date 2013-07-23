@@ -27,27 +27,24 @@ class PluginL10n_ModuleTopic_EntityTopic extends PluginL10n_Inherit_ModuleTopic_
     }
 
     /**
-     * Get values from extra fields directly
-     *
-     * @param string $keyName
-     * @param mixed $value
-     *
-     * @return bool result
-     */
-    public function setExtraData($keyName, $value)
-    {
-        return $this->setExtraValue($keyName, $value);
-    }
-
-    /**
-     * Get values from extra fields directly (by key)
-     *
-     * @param string $keyName
+     * Get topic collapsed count from extra
      *
      * @return mixed
      */
-    public function getExtraData($keyName)
+    public function getCountCollapsedTopics()
     {
-        return $this->getExtraValue($keyName);
+        return $this->getExtraValue('collapsedCount');
+    }
+
+    /**
+     * Set extra value (collapset comments count)
+     *
+     * @param $value
+     *
+     * @return mixed
+     */
+    public function setCountCollapsedTopics($value)
+    {
+        return $this->setExtraValue('collapsedCount', $value);
     }
 }
