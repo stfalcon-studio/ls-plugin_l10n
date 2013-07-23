@@ -101,7 +101,7 @@ class PluginL10n_ModuleTopic_MapperTopic extends PluginL10n_Inherit_ModuleTopic_
      * @param array $aFilter
      * @return string
      */
-    protected function buildFilter(array $aFilter)
+    protected function buildFilter($aFilter)
     {
         $sWhere = parent::buildFilter($aFilter);
 
@@ -266,6 +266,18 @@ class PluginL10n_ModuleTopic_MapperTopic extends PluginL10n_Inherit_ModuleTopic_
             return true;
         }
         return false;
+    }
+
+    /**
+     * Update data in topic_content table (Bypassing the topic update operation)
+     *
+     * @param ModuleTopic_EntityTopic $oTopic
+     *
+     * @return mixed
+     */
+    public function UpdateContent($oTopic)
+    {
+        return $this->UpdateTopicContent($oTopic);
     }
 
 }

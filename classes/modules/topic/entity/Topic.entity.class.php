@@ -23,7 +23,28 @@ class PluginL10n_ModuleTopic_EntityTopic extends PluginL10n_Inherit_ModuleTopic_
      * @return string
      */
     public function getLang() {
-        return $this->_aData['topic_lang'];
+        return isset($this->_aData['topic_lang']) ? $this->_aData['topic_lang'] : '';
     }
 
+    /**
+     * Get topic collapsed count from extra
+     *
+     * @return mixed
+     */
+    public function getCountCollapsedTopics()
+    {
+        return $this->getExtraValue('collapsedCount');
+    }
+
+    /**
+     * Set extra value (collapset comments count)
+     *
+     * @param $value
+     *
+     * @return mixed
+     */
+    public function setCountCollapsedTopics($value)
+    {
+        return $this->setExtraValue('collapsedCount', $value);
+    }
 }
