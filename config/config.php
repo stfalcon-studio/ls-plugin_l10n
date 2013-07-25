@@ -1,7 +1,7 @@
 <?php
 
 Config::Set('db.table.blog_l10n', '___db.table.prefix___blog_l10n');
-
+Config::Set('router.page.translator', 'PluginL10n_ActionTranslator');
 $config = array();
 
 // список доступных языков (для разных языковых версий сайта)
