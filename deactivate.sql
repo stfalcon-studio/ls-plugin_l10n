@@ -6,3 +6,5 @@ ALTER TABLE `prefix_topic` DROP INDEX `topic_original_id`;
 ALTER TABLE `prefix_topic` DROP `topic_original_id`;
 
 DROP TABLE IF EXISTS `prefix_blog_l10n`;
+
+DROP TABLE IF EXISTS `prefix_translators_l10n`;

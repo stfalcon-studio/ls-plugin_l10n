@@ -27,3 +27,10 @@ INSERT INTO prefix_blog_l10n
         FROM
                 `prefix_blog`
         WHERE 1);
+
+CREATE TABLE IF NOT EXISTS `prefix_translators_l10n` (
+        `id` INT(11) NOT NULL, PRIMARY KEY
+        `user_id` INT(11) UNSIGNED NOT NULL,
+        `user_name` VARCHAR(200) NOT NULL,
+        `assign_date` DATETIME NOT NULL,
+) ENGINE = INNODB DEFAULT CHARSET=utf8;
