@@ -27,4 +27,6 @@ return array(
     'l10n_topic_translate_lang_error' => 'Язык перевода совпадает с языком топика',
 
     'l10n_unavaliable_lang' => 'Указанный язык не поддерживается',
+
+    'l10n.not_translated_topics' => 'Непереведённые топики',
 );

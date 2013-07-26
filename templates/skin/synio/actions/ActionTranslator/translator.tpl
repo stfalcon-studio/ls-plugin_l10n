@@ -1,1 +1,0 @@
-<h1><a href="/translator">translator link</h1>

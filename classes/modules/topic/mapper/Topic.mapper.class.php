@@ -268,4 +268,34 @@ class PluginL10n_ModuleTopic_MapperTopic extends PluginL10n_Inherit_ModuleTopic_
         return false;
     }
 
+    public function GetNotTranslatedTopicsByFilter($aFilter, &$iCount, $iPage, $iPerPage)
+    {
+        $sWhere = $this->buildFilter($aFilter);
+
+        if (!isset($aFilter['order'])) {
+            $aFilter['order'] = 't.topic_date_add desc';
+        }
+        if (!is_array($aFilter['order'])) {
+            $aFilter['order'] = array($aFilter['order']);
+        }
+
+        $sql = "SELECT t.topic_id
+                FROM " . Config::Get('db.table.topic') . " AS t
+                LEFT OUTER JOIN " . Config::Get('db.table.topic') . " AS tt
+                    ON t.topic_original_id IS NULL
+                WHERE
+                    t.topic_id <> tt.topic_original_id
+					ORDER BY " .
+            implode(', ', $aFilter['order'])
+            . "
+					LIMIT ?d, ?d";
+        $aTopics = array();
+        if ($aRows = $this->oDb->selectPage($iCount, $sql, ($iPage - 1) * $iPerPage, $iPerPage)) {
+            foreach ($aRows as $aTopic) {
+                $aTopics[] = $aTopic['topic_id'];
+            }
+        }
+
+        return $aTopics;
+    }
 }

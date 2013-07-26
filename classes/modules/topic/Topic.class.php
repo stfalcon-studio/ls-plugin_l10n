@@ -202,4 +202,29 @@ class PluginL10n_ModuleTopic extends PluginL10n_Inherit_ModuleTopic
         }
     }
 
+    /**
+     * @param array $aFilter
+     * @param int $iPage
+     * @param int $iPerPage
+     *
+     * @return array
+     */
+    public function GetNotTranslatedTopicsByFilter($aFilter, $iPage = 1, $iPerPage = 10)
+    {
+        if (!is_numeric($iPage) or $iPage <= 0) {
+            $iPage = 1;
+        }
+        $s = serialize($aFilter);
+        if (false === ($data = $this->Cache_Get("topic_not_translated_{$s}_{$iPage}_{$iPerPage}"))) {
+            $data = array(
+                'collection' => $this->oMapperTopic->GetNotTranslatedTopicsByFilter($aFilter, $iCount, $iPage, $iPerPage),
+                'count'      => $iCount
+            );
+            $this->Cache_Set($data, "topic_not_translated_{$s}_{$iPage}_{$iPerPage}", array('topic_update', 'topic_new'), 60 * 60 * 24 * 3);
+        }
+        $data['collection'] = $this->GetTopicsAdditionalData($data['collection']);
+
+        return $data;
+    }
+
 }
