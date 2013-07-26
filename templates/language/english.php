@@ -27,4 +27,6 @@ return array(
     'l10n_topic_translate_lang_error' => 'Translation\'s language matches with an original\'s language',
 
     'l10n_unavaliable_lang' => 'Unavailable language',
+
+    'l10n_not_translated_topics' => 'Not translated topics',
 );

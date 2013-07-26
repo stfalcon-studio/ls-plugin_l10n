@@ -16,6 +16,8 @@ class PluginL10n_HookL10n extends Hook
         // @todo в паре с плагином aceadminpanel хук вызывается дважды.
         $this->AddHook('lang_init_start', 'SetLang', __CLASS__);
         $this->AddHook('init_action', 'ShowBlockSelectLang', __CLASS__);
+
+        $this->AddHook('template_admin_action_item', 'TemplateTranslator', __CLASS__);
 //        $this->AddHook('engine_init_complete', 'UpdateBlockRoutes', __CLASS__);
     }
 
@@ -142,5 +144,13 @@ class PluginL10n_HookL10n extends Hook
         }
 
         return $bRet;
+    }
+
+    /**
+     * @return string
+     */
+    public function TemplateTranslator()
+    {
+        return $this->Viewer_Fetch(Plugin::GetTemplatePath(__CLASS__) . 'hooks/admin_action_translation.tpl');
     }
 }
