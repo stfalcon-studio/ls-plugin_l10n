@@ -28,5 +28,8 @@ return array(
 
     'l10n_unavaliable_lang' => 'Указанный язык не поддерживается',
 
-    'l10n.not_translated_topics' => 'Непереведённые топики',
+    'l10n_not_translated_topics' => 'Непереведённые топики',
+    'l10n_topic_name' => 'Имя топика',
+    'l10n_topic_language' => 'Язык топика',
+    'l10n_additional_functions' => 'Дополнительные функции',
 );

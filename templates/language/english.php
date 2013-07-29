@@ -29,4 +29,7 @@ return array(
     'l10n_unavaliable_lang' => 'Unavailable language',
 
     'l10n_not_translated_topics' => 'Not translated topics',
+    'l10n_topic_name' => 'Topic Name',
+    'l10n_topic_language' => 'Topic language',
+    'l10n_additional_functions' => 'Additional functions',
 );

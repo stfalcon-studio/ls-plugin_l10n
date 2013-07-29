@@ -4,16 +4,16 @@
 <table class="table table-blogs">
     <thead>
     <tr>
-        <th class="cell-name">Topic Name</th>
-        <th class="cell-readers">Language</th>
-        <th class="cell-rating align-center">Additional functions</th>
+        <th class="cell-name">{$aLang.plugin.l10n.l10n_topic_name}</th>
+        <th class="cell-readers">{$aLang.plugin.l10n.l10n_topic_language}</th>
+        <th class="cell-rating align-center">{$aLang.plugin.l10n.l10n_additional_functions}</th>
     </tr>
     </thead>
     <tbody>
         {foreach from=$aTopicData item=oTopic}
             <tr>
                 <td class="cell-name">
-                    {$oTopic->getTopicTitle()}
+                    <a href="{$oTopic->getUrl()}">{$oTopic->getTopicTitle()}</a>
                 </td>
                 <td class="cell-name">
                     {$oTopic->getTopicLang()}
