@@ -22,10 +22,12 @@ class PluginL10n_ModuleBlog_MapperBlog extends PluginL10n_Inherit_ModuleBlog_Map
                     bl.blog_lang
                 FROM
                     " . Config::Get('db.table.blog') . " as b
-                LEFT JOIN (SELECT * FROM " . Config::Get('db.table.blog_l10n') . " as bl WHERE blog_lang = ?) as bl
-                    ON bl.blog_id = b.blog_id
+                LEFT JOIN ".Config::Get('db.table.blog_l10n')." as bl ON (bl.blog_id = b.blog_id )
+                
                 WHERE
-                    b.blog_id IN(?a)
+                    bl.blog_lang = ?
+                    AND
+                    b.blog_id IN(?a) 
                 ORDER BY FIELD(b.blog_id,?a) ";
         $aBlogs = array();
         if ($aRows = $this->oDb->select($sql, $sLang, $aArrayId, $aArrayId)) {
