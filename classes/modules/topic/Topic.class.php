@@ -71,7 +71,7 @@ class PluginL10n_ModuleTopic extends PluginL10n_Inherit_ModuleTopic
      * @return array
      */
     public function GetOpenTopicTags($iLimit, $iUserId=null) {
-        $id = "tag_{$iLimit}_open" . (is_null($this->PluginL10n_L10n_GetLangForQuery()) ? '' : '_' . $this->PluginL10n_L10n_GetLangForQuery());
+        $id = "tag_{$iLimit}_{$iUserId}_open" . (is_null($this->PluginL10n_L10n_GetLangForQuery()) ? '' : '_' . $this->PluginL10n_L10n_GetLangForQuery());
         if (false === ($data = $this->Cache_Get($id))) {
             $data = $this->oMapperTopic->GetOpenTopicTags($iLimit, $this->PluginL10n_L10n_GetLangFromUrl(), $iUserId);
             $this->Cache_Set($data, $id, array('topic_update', 'topic_new'), 60 * 60 * 24 * 3);
