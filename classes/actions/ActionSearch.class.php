@@ -4,7 +4,7 @@ class PluginL10n_ActionSearch extends ActionSearch
 {
     public function Init()
     {
-        $sLang = Config::Get('lang.current') ? Config::Get('lang.current') : 'russian';
+        $sLang = Config::Get('lang.current');
         $this->sTypesEnabled['topics']['topic_lang'] = crc32(strtolower($sLang));
         $this->sTypesEnabled['comments']['comment_topic_lang'] = crc32(strtolower($sLang));
         $this->SetDefaultEvent('index');
