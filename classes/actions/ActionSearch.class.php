@@ -1,6 +1,6 @@
 <?php
 
-class PluginL10n_ActionSearch extends ActionSearch
+class PluginL10n_ActionSearch extends PluginL10n_Inherit_ActionSearch
 {
     public function Init()
     {
