@@ -52,8 +52,9 @@ before_script:
    # Sphinx stuff
   - sudo apt-get install sphinxsearch
   - sudo cp ./plugins/l10n/config/sphinx.conf /etc/sphinxsearch/sphinx.conf
-  - sudo /usr/bin/searchd --stop
-  - sudo /usr/bin/searchd --config /etc/sphinxsearch/sphinx.conf
-  - sudo /usr/bin/indexer --all --rotate
+  - sudo -u sphinxsearch /usr/bin/indexer --all
+  - sudo -u sphinxsearch /usr/bin/searchd
+  - sleep 5
+  - sudo -u sphinxsearch /usr/bin/indexer --all --rotate
 
 script: HTTP_APP_ENV=test cd tests/behat/ && php behat.phar --config='../../plugins/l10n/tests/behat/behat.yml' --strict
