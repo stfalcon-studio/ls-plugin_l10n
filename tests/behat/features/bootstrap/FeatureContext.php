@@ -34,7 +34,7 @@ class FeatureContext extends MinkContext
      */
     public function iRotateSphinx()
     {
-       shell_exec('sudo indexer --all --rotate');
+       echo (shell_exec('sudo /usr/bin/indexer --all --rotate'));
     }
 
 }
