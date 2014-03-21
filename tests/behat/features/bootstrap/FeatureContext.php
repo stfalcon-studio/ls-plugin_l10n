@@ -28,6 +28,15 @@ class FeatureContext extends MinkContext
         return $this->getSubcontext('base')->getEngine();
     }
 
+
+    /**
+     * @When /^I rotate sphinx$/
+     */
+    public function iRotateSphinx()
+    {
+       shell_exec('sudo -u sphinxsearch /usr/bin/indexer --all --rotate');
+    }
+
 }
 
 

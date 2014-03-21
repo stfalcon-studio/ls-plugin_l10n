@@ -101,7 +101,7 @@ class PluginL10n_ModuleTopic_MapperTopic extends PluginL10n_Inherit_ModuleTopic_
      * @param array $aFilter
      * @return string
      */
-    protected function buildFilter(array $aFilter)
+    protected function buildFilter($aFilter)
     {
         $sWhere = parent::buildFilter($aFilter);
 

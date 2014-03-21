@@ -10,7 +10,7 @@ class PluginL10n_ModuleBlog extends PluginL10n_Inherit_ModuleBlog {
      *
      * @param array $aUserId
      */
-    public function GetBlogsByArrayId($aBlogId) {
+    public function GetBlogsByArrayId($aBlogId, $aOrder=null) {
         if (!$aBlogId) {
             return array();
         }
@@ -79,7 +79,7 @@ class PluginL10n_ModuleBlog extends PluginL10n_Inherit_ModuleBlog {
      * @param unknown_type $aBlogId
      * @return unknown
      */
-    public function GetBlogsByArrayIdSolid($aBlogId) {
+    public function GetBlogsByArrayIdSolid($aBlogId,$aOrder=null) {
         if (!is_array($aBlogId)) {
             $aBlogId = array($aBlogId);
         }
