@@ -44,7 +44,8 @@ class PluginL10n_ModuleTopic extends PluginL10n_Inherit_ModuleTopic
      */
     public function GetCountTopicsByFilter($aFilter)
     {
-        if ($this->oUserCurrent->isAdministrator()) {
+        // если администратор считаем количество вместе с неопубликоваными топиками других юзеров
+        if ($this->oUserCurrent && $this->oUserCurrent->isAdministrator()) {
             $aFilter['translate_all'] = true;
         }
 
@@ -57,15 +58,12 @@ class PluginL10n_ModuleTopic extends PluginL10n_Inherit_ModuleTopic
      * @param array $aFilter
      * @return array
      */
-    private function _getModifiedFilter(array $aFilter) {
-
+    private function _getModifiedFilter(array $aFilter)
+    {
         if (!isset($aFilter['topic_lang'])) {
             $aFilter['topic_lang'] = $this->PluginL10n_L10n_GetLangForQuery();
         }
-//                elseif ($this->User_IsAuthorization()) {
-//                        $oUser = $this->User_GetUserCurrent();
-//                        $aFilter['topic_lang'] = $oUser->getUserLang();
-//                }
+
         return $aFilter;
     }
 
@@ -75,10 +73,11 @@ class PluginL10n_ModuleTopic extends PluginL10n_Inherit_ModuleTopic
      * @param  int $iLimit
      * @return array
      */
-    public function GetOpenTopicTags($iLimit,   $iUserId=null) {
+    public function GetOpenTopicTags($iLimit, $iUserId = null)
+    {
         $id = "tag_{$iLimit}_open" . (is_null($this->PluginL10n_L10n_GetLangForQuery()) ? '' : '_' . $this->PluginL10n_L10n_GetLangForQuery());
         if (false === ($data = $this->Cache_Get($id))) {
-            $data = $this->oMapperTopic->GetOpenTopicTags($iLimit, $this->PluginL10n_L10n_GetLangFromUrl());
+            $data = $this->oMapperTopic->GetOpenTopicTags($iLimit, $this->PluginL10n_L10n_GetLangFromUrl(), $iUserId);
             $this->Cache_Set($data, $id, array('topic_update', 'topic_new'), 60 * 60 * 24 * 3);
         }
         return $data;
@@ -118,7 +117,7 @@ class PluginL10n_ModuleTopic extends PluginL10n_Inherit_ModuleTopic
      * @param int $iPerPage	Количество элементов на страницу
      * @return array
      */
-    public function GetTopicsPersonalByUser($sUserId,$iPublish,$iPage,$iPerPage)
+    public function GetTopicsPersonalByUser($sUserId, $iPublish, $iPage, $iPerPage)
     {
         $aFilter = array(
             'topic_publish' => $iPublish,
@@ -126,7 +125,8 @@ class PluginL10n_ModuleTopic extends PluginL10n_Inherit_ModuleTopic
             'blog_type' => array('open','personal'),
         );
 
-        if ($this->oUserCurrent->isAdministrator() && !$iPublish) {
+        // если администратор показвает неопубликованные черновики других пользователей
+        if ($this->oUserCurrent && $this->oUserCurrent->isAdministrator() && !$iPublish) {
                 $aFilter['translate_all'] = true;
         }
 
