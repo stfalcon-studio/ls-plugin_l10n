@@ -112,6 +112,9 @@ class PluginL10n_HookTopic extends Hook
     public function TopicAddAfter($aData) {
         $oTopic = $aData['oTopic'];
 
+        $topicLangAlias = $this->PluginL10n_L10n_GetAliasByLang($oTopic->getTopicLang());
+        Router::setLang($topicLangAlias);
+
         if ($oTopicOriginal = $this->_getTopicOriginalByUrParams()) {
             if (!$this->Topic_SetTopicOriginal($oTopic, $oTopicOriginal)) {
                 $this->Message_AddErrorSingle($this->Lang_Get('system_error'));
