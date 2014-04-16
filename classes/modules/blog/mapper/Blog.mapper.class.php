@@ -5,13 +5,27 @@
  */
 class PluginL10n_ModuleBlog_MapperBlog extends PluginL10n_Inherit_ModuleBlog_MapperBlog {
 
-    public function GetBlogsByArrayId($aArrayId, $sLang = null) {
+    public function GetBlogsByArrayId($aArrayId, $aOrder = null, $sLang = null) {
         if (!is_array($aArrayId) or count($aArrayId) == 0) {
             return array();
         }
 
         if (is_null($sLang)) {
             return parent::GetBlogsByArrayId($aArrayId);
+        }
+
+        if (!is_array($aOrder)) {
+            $aOrder = array($aOrder);
+        }
+
+        $sOrder = '';
+        foreach ($aOrder as $key => $value) {
+            $value = (string)$value;
+            if (!in_array($key, array('blog_id', 'blog_title', 'blog_type', 'blog_rating', 'blog_count_user', 'blog_date_add'))) {
+                unset($aOrder[$key]);
+            } elseif (in_array($value, array('asc', 'desc'))) {
+                $sOrder .= " AND {$key} {$value} ";
+            }
         }
 
         $sql = "SELECT
@@ -26,7 +40,9 @@ class PluginL10n_ModuleBlog_MapperBlog extends PluginL10n_Inherit_ModuleBlog_Map
                     ON bl.blog_id = b.blog_id
                 WHERE
                     b.blog_id IN(?a)
-                ORDER BY FIELD(b.blog_id,?a) ";
+                ORDER BY FIELD(b.blog_id, ?a) ";
+        $sql .= $sOrder;
+
         $aBlogs = array();
         if ($aRows = $this->oDb->select($sql, $sLang, $aArrayId, $aArrayId)) {
             foreach ($aRows as $aBlog) {
