@@ -24,9 +24,10 @@ class PluginL10n_ModuleBlog_MapperBlog extends PluginL10n_Inherit_ModuleBlog_Map
             if (!in_array($key, array('blog_id', 'blog_title', 'blog_type', 'blog_rating', 'blog_count_user', 'blog_date_add'))) {
                 unset($aOrder[$key]);
             } elseif (in_array($value, array('asc', 'desc'))) {
-                $sOrder .= " AND {$key} {$value} ";
+                $sOrder.=" {$key} {$value},";
             }
         }
+        $sOrder = trim(trim($sOrder, ','));
 
         $sql = "SELECT
                     b.*,
@@ -40,11 +41,14 @@ class PluginL10n_ModuleBlog_MapperBlog extends PluginL10n_Inherit_ModuleBlog_Map
                     ON bl.blog_id = b.blog_id
                 WHERE
                     b.blog_id IN(?a)
-                ORDER BY FIELD(b.blog_id, ?a) ";
-        $sql .= $sOrder;
+                ORDER BY
+                    { FIELD(b.blog_id, ?a) } ";
+        if ($sOrder != '') {
+            $sql .= $sOrder;
+        }
 
         $aBlogs = array();
-        if ($aRows = $this->oDb->select($sql, $sLang, $aArrayId, $aArrayId)) {
+        if ($aRows = $this->oDb->select($sql, $sLang, $aArrayId, $sOrder == '' ? $aArrayId : DBSIMPLE_SKIP)) {
             foreach ($aRows as $aBlog) {
                 $aBlogs[] = Engine::GetEntity('Blog', $aBlog);
             }
