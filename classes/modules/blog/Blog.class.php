@@ -15,7 +15,7 @@ class PluginL10n_ModuleBlog extends PluginL10n_Inherit_ModuleBlog {
             return array();
         }
         if (Config::Get('sys.cache.solid')) {
-            return $this->GetBlogsByArrayIdSolid($aBlogId);
+            return $this->GetBlogsByArrayIdSolid($aBlogId, $aOrder);
         }
         if (!is_array($aBlogId)) {
             $aBlogId = array($aBlogId);
@@ -50,7 +50,7 @@ class PluginL10n_ModuleBlog extends PluginL10n_Inherit_ModuleBlog {
         $aBlogIdNeedQuery = array_diff($aBlogId, array_keys($aBlogs));
         $aBlogIdNeedQuery = array_diff($aBlogIdNeedQuery, $aBlogIdNotNeedQuery);
         $aBlogIdNeedStore = $aBlogIdNeedQuery;
-        if ($data = $this->oMapperBlog->GetBlogsByArrayId($aBlogIdNeedQuery, $sLang)) {
+        if ($data = $this->oMapperBlog->GetBlogsByArrayId($aBlogIdNeedQuery, $aOrder, $sLang)) {
             foreach ($data as $oBlog) {
                 /**
                  * Добавляем к результату и сохраняем в кеш
@@ -79,7 +79,7 @@ class PluginL10n_ModuleBlog extends PluginL10n_Inherit_ModuleBlog {
      * @param unknown_type $aBlogId
      * @return unknown
      */
-    public function GetBlogsByArrayIdSolid($aBlogId,$aOrder=null) {
+    public function GetBlogsByArrayIdSolid($aBlogId, $aOrder = null) {
         if (!is_array($aBlogId)) {
             $aBlogId = array($aBlogId);
         }
@@ -87,11 +87,10 @@ class PluginL10n_ModuleBlog extends PluginL10n_Inherit_ModuleBlog {
         $aBlogs = array();
         $s = join(',', $aBlogId);
 
-//        $sLang = $this->PluginL10n_L10n_GetLangForQuery();
         $sLang = is_null($this->PluginL10n_L10n_GetLangFromUrl()) ? Config::Get('lang.current') : $this->PluginL10n_L10n_GetLangFromUrl();
         $id = $sLang . '_';
         if (false === ($data = $this->Cache_Get($id . "blog_id_{$s}"))) {
-            $data = $this->oMapperBlog->GetBlogsByArrayId($aBlogId, $sLang);
+            $data = $this->oMapperBlog->GetBlogsByArrayId($aBlogId, $aOrder, $sLang);
             foreach ($data as $oBlog) {
                 $aBlogs[$oBlog->getId()] = $oBlog;
             }
