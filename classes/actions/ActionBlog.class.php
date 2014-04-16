@@ -9,8 +9,6 @@ class PluginL10n_ActionBlog extends PluginL10n_Inherit_ActionBlog
 
     protected function EventShowTopic()
     {
-        parent::EventShowTopic();
-
         if ($this->GetParamEventMatch(0,1)) {
             $iTopicId=$this->GetParamEventMatch(0,1);
         } else {
@@ -19,9 +17,11 @@ class PluginL10n_ActionBlog extends PluginL10n_Inherit_ActionBlog
 
         $oTopic = $this->Topic_GetTopicById($iTopicId);
 
-        if ($oTopic->getLang() != Config::get('lang.current')) {
+        if (!$oTopic || ($oTopic->getLang() != Config::get('lang.current'))) {
             return parent::EventNotFound();
         }
+
+        parent::EventShowTopic();
     }
 
 }
