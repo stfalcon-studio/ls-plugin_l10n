@@ -59,5 +59,10 @@ foreach ($aAllowedLangsAliases as $sLangAlias) {
 }
 Config::Set('router.uri', $aRouterUri);
 
+$config['role'] = array(
+    'translator' => 'TRANSLATOR',
+    'user' => 'USER',
+);
+
 $config['use_geoip'] = false;
 return $config;

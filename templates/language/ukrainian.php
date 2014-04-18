@@ -32,4 +32,7 @@ return array(
     'l10n_topic_name' => 'Ім*я топіка',
     'l10n_topic_language' => 'Мова топіка',
     'l10n_additional_functions' => 'Додаткові функції',
+    'l10n_set_role_translator' => 'Додати в перекладачі',
+    'l10n_unset_role_translator' => 'Видалити з перекладачів',
+    'l10n_topic_translate_not_allow' => 'Вам не дозволено створювати переводи',
 );

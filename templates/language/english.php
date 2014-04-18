@@ -32,4 +32,7 @@ return array(
     'l10n_topic_name' => 'Topic Name',
     'l10n_topic_language' => 'Topic language',
     'l10n_additional_functions' => 'Additional functions',
+    'l10n_set_role_translator' => 'Add to interpreters',
+    'l10n_unset_role_translator' => 'Remove from interpreters',
+    'l10n_topic_translate_not_allow' => 'You do not have permission to create a translation',
 );

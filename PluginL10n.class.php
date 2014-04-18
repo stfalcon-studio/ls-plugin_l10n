@@ -33,6 +33,7 @@ class PluginL10n extends Plugin
 		'entity' => array(
 			'ModuleBlog_EntityBlog' => '_ModuleBlog_EntityBlog',
 			'ModuleTopic_EntityTopic' => '_ModuleTopic_EntityTopic',
+            'ModuleUser_EntityUser' => '_ModuleUser_EntityUser',
 		),
 		'mapper' => array(
 			'ModuleBlog_MapperBlog' => '_ModuleBlog_MapperBlog',

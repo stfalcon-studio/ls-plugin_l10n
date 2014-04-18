@@ -20,6 +20,11 @@ class PluginL10n_HookUser extends Hook
                 'TemplateFormRegistrationEnd', __CLASS__);
         // хук на меню настроек пользователя
         $this->AddHook('template_menu_settings_settings_item', 'TemplateMenuSettings', __CLASS__);
+
+        $oCurrentUser = $this->User_GetUserCurrent();
+        if ($oCurrentUser && $oCurrentUser->isAdministrator()) {
+            $this->AddHook('template_profile_sidebar_end', 'TemplateMenuRole', __CLASS__);
+        }
     }
 
     /**
@@ -33,6 +38,21 @@ class PluginL10n_HookUser extends Hook
             $sTemplatePath = Plugin::GetTemplatePath('l10n') . 'actions/ActionSettings/l10n.menu.settings.tpl';
             return $this->Viewer_Fetch($sTemplatePath);
         }
+    }
+
+    public function TemplateMenuRole($aData)
+    {
+        $oUserProfile = $aData['oUserProfile'];
+        if ($oUserProfile->hasRole(Config::Get('plugin.l10n.role.translator'))) {
+            $this->Viewer_Assign('bTranslator', true);
+        } else {
+            $this->Viewer_Assign('bTranslator', false);
+        }
+
+        $this->Viewer_Assign('iUserId', $oUserProfile->getId());
+
+        $sTemplatePath = Plugin::GetTemplatePath('l10n') . 'l10n.menu.role.tpl';
+        return $this->Viewer_Fetch($sTemplatePath);
     }
 
     /**
@@ -66,6 +86,8 @@ class PluginL10n_HookUser extends Hook
             $oUser->setUserLang($sUserLang);
             $this->User_UpdateUserLang($oUser);
         }
+
+        $this->User_UpdateUserRole($oUser);
     }
 
 }
