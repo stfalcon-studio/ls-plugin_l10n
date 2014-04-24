@@ -30,7 +30,7 @@ class PluginL10n_ActionTranslation extends  ActionPlugin
         $aResult = $this->Topic_GetNotTranslatedTopicsByFilter($aFilter, $iPage, Config::Get('module.topic.per_page'));
 
         $aPaging = $this->Viewer_MakePaging($aResult['count'], $iPage, Config::Get('module.topic.per_page'),
-            Config::Get('pagination.pages.count'), Router::GetPath('admin') . 'translation');
+            Config::Get('pagination.pages.count'), Router::GetPath('translation'). 'index/');
 
         $this->Viewer_Assign('aPaging', $aPaging);
         $this->Viewer_Assign('noSidebar', true);
