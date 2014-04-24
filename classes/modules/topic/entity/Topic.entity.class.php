@@ -26,4 +26,36 @@ class PluginL10n_ModuleTopic_EntityTopic extends PluginL10n_Inherit_ModuleTopic_
         return $this->_aData['topic_lang'];
     }
 
+    /**
+     * Возвращает полный URL до топика
+     *
+     * @return string
+     */
+    public function getUrl($sLang = null)
+    {
+        if ($sLang && in_array($sLang, $this->PluginL10n_L10n_GetAllowedLangs())) {
+            $sLang = $this->PluginL10n_L10n_GetAliasByLang($sLang);
+        }
+
+        if ($this->getBlog()->getType() == 'personal') {
+            return Router::GetPath('blog', $sLang) . $this->getId() . '.html';
+        } else {
+            return Router::GetPath('blog', $sLang) . $this->getBlog()->getUrl() . '/' . $this->getId() . '.html';
+        }
+    }
+
+    /**
+     * Возвращает полный URL до страницы редактировани топика
+     *
+     * @return string
+     */
+    public function getUrlEdit($sLang = null)
+    {
+        if ($sLang && in_array($sLang, $this->PluginL10n_L10n_GetAllowedLangs())) {
+            $sLang = $this->PluginL10n_L10n_GetAliasByLang($sLang);
+        }
+
+        return Router::GetPath($this->getType(), $sLang) . 'edit/' . $this->getId() . '/';
+    }
+
 }

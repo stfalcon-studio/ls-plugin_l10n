@@ -9,7 +9,7 @@
                 <div class="block-lang">
                     <img src="{$sTemplateWebPathPluginL10n}images/flags/{$sTopicLang}.png"
                          title="{$aLang.plugin.l10n.$l10n_lang_this}" alt="{$aLang.plugin.l10n.$l10n_lang_this}"/>
-                    <a href="{$oTopicOriginal->getUrl()}">{$oTopicOriginal->getTitle()}</a>
+                    <a href="{$oTopicOriginal->getUrl($oTopicOriginal->getTopicLang())}">{$oTopicOriginal->getTitle()}</a>
                 </div>
             {else if $aTopicTranslates}
                 <h2>{$aLang.plugin.l10n.l10n_topic_translations}</h2>
@@ -20,7 +20,7 @@
                         <li>
                             <img src="{$sTemplateWebPathPluginL10n}images/flags/{$sTopicLang}.png"
                                  title="{$aLang.plugin.l10n.$l10n_lang_this}" alt="{$aLang.plugin.l10n.$l10n_lang_this}"/>
-                            <a href="{$oTopicTranslate->getUrl()}">{$oTopicTranslate->getTitle()}</a>
+                            <a href="{$oTopicTranslate->getUrl($oTopicTranslate->getTopicLang())}">{$oTopicTranslate->getTitle()}</a>
                         </li>
                     {/foreach}
                 </ul>
