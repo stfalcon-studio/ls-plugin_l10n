@@ -28,6 +28,7 @@ class PluginL10n extends Plugin
 			'ModuleTopic' => '_ModuleTopic',
 			'ModuleComment' => '_ModuleComment',
 			'ModuleUser' => '_ModuleUser',
+			'ModuleACL' => '_ModuleACL',
 			'PluginSitemap_ModuleSitemap' => 'PluginL10n_ModuleSitemap',
 		),
 		'entity' => array(
