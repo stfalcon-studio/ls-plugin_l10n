@@ -8,22 +8,32 @@ class PluginL10n_ActionAdmin extends PluginL10n_Inherit_ActionAdmin
     protected function RegisterEvent()
     {
         parent::RegisterEvent();
-        $this->AddEventPreg('/^translation$/i', '/^(page([1-9]\d{0,5}))?$/i', 'EventTranslation');
+        $this->AddEvent('role', 'EventUpdateUserRole');
     }
 
-    protected function EventTranslation()
+    protected function EventUpdateUserRole()
     {
-        $iPage=$this->GetParamEventMatch(0,2) ? $this->GetParamEventMatch(0,2) : 1;
+        // Check is id parameter exists
+        $iUserId = getRequest('user_id', false);
+        if (!$iUserId) {
+            return Router::Action('error');
+        }
 
-        $aFilter = array();
+        // Check is edited user exists
+        $oUserProfile = $this->User_GetUserById($iUserId);
+        if (!$oUserProfile) {
+            return Router::Action('error');
+        }
 
-        $aResult = $this->Topic_GetNotTranslatedTopicsByFilter($aFilter, $iPage, Config::Get('module.topic.per_page'));
+        // add\remove role translator
+        if (getRequest('add', false)) {
+            $oUserProfile->setUserRole(Config::Get('plugin.l10n.role.translator'));
+        } else {
+            $oUserProfile->setUserRole(Config::Get('plugin.l10n.role.user'));
+        }
 
-        $aPaging = $this->Viewer_MakePaging($aResult['count'], $iPage, Config::Get('module.topic.per_page'),
-            Config::Get('pagination.pages.count'), Router::GetPath('admin') . 'translation');
+        $this->User_UpdateUserRole($oUserProfile);
 
-        $this->Viewer_Assign('aPaging', $aPaging);
-        $this->Viewer_Assign('noSidebar', true);
-        $this->Viewer_Assign('aTopicData', $aResult['collection']);
+        Router::Location($oUserProfile->getUserWebPath());
     }
 }

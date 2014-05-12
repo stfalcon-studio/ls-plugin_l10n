@@ -1,4 +1,5 @@
 ALTER TABLE `prefix_user` DROP `user_lang`;
+ALTER TABLE `prefix_user` DROP `user_role`;
 
 DELETE FROM `prefix_topic` WHERE `topic_original_id` IS NOT NULL;
 ALTER TABLE `prefix_topic` DROP `topic_lang`;

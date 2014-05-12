@@ -1,4 +1,5 @@
 ALTER TABLE `prefix_user` ADD `user_lang` VARCHAR(16) NOT NULL DEFAULT 'russian' AFTER `user_password`;
+ALTER TABLE `prefix_user` ADD `user_role` VARCHAR(16);
 
 ALTER TABLE `prefix_topic` ADD `topic_lang` VARCHAR(16) NOT NULL DEFAULT 'russian' AFTER `topic_type`;
 ALTER TABLE `prefix_topic` ADD `topic_original_id` INT(11) NULL AFTER `topic_lang`;

@@ -167,6 +167,12 @@ class PluginL10n_HookTopic extends Hook
         $btnOk = &$aData['bOk'];
 
         if (Router::GetActionEvent() == 'add' && Router::GetParam(0) == 'translate') {
+            $oCurrentUser = $this->User_GetUserCurrent();
+            if (!$oCurrentUser || !$oCurrentUser->hasRole(Config::Get('plugin.l10n.role.translator'))) {
+                $this->Message_AddError($this->Lang_Get('plugin.l10n.l10n_topic_translate_not_allow'), $this->Lang_Get('system_error'));
+                $btnOk = false;
+            }
+
             if (!$oTopicOriginal = $this->_getTopicOriginalByUrParams()) {
                 $this->Message_AddError(
                         $this->Lang_Get('plugin.l10n.l10n_topic_translate_not_exist'), $this->Lang_Get('error'));
@@ -290,10 +296,12 @@ class PluginL10n_HookTopic extends Hook
         if (!$oUser = $this->User_GetUserCurrent()) {
             return false;
         }
-        if (!$oUser->isAdministrator()) {
+
+        if ($oUser->isAdministrator() || $oUser->hasRole(Config::Get('plugin.l10n.role.translator'))) {
+            return true;
+        } else {
             return false;
         }
-        return true;
     }
 
     /**

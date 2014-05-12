@@ -25,4 +25,17 @@ class PluginL10n_ModuleUser_MapperUser extends PluginL10n_Inherit_ModuleUser_Map
         return true;
     }
 
+    public function UpdateUserRole(ModuleUser_EntityUser $oUser)
+    {
+        $sql = 'UPDATE
+                    ' . Config::Get('db.table.user') . '
+                SET
+                    user_role = ?
+                WHERE
+                    user_id = ?d';
+        $this->oDb->query($sql, $oUser->getUserRole(), $oUser->getId());
+
+        return true;
+    }
+
 }

@@ -58,6 +58,12 @@ foreach ($aAllowedLangsAliases as $sLangAlias) {
     $aRouterUri['/^' . $sLangAlias . '\/sitemap_(\w+)_(\d+)\.xml/i'] = $sLangAlias . '/sitemap/sitemap/\\1/\\2';
 }
 Config::Set('router.uri', $aRouterUri);
+Config::Set('router.page.translation', 'PluginL10n_ActionTranslation');
+
+$config['role'] = array(
+    'translator' => 'TRANSLATOR',
+    'user' => 'USER',
+);
 
 $config['use_geoip'] = false;
 return $config;
