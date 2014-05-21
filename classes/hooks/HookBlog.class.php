@@ -78,7 +78,7 @@ class PluginL10n_HookBlog extends Hook {
 
             $sTitleText = getRequest('blog_title', null, 'post');
             $sDescriptionText = $this->Text_Parser(getRequest('blog_description', null, 'post'));
-            $oBlog->setBlogUrlL10n(getRequest('blog_url', null, 'post'));
+            $oBlog->setBlogUrlL10n(getRequestStr('blog_url', null));
         } elseif (isset($aData['result']) && is_a($aData['result'], 'ModuleBlog_EntityBlog')) {
             // персональный блог
             $oBlog = $aData['result'];
@@ -122,7 +122,7 @@ class PluginL10n_HookBlog extends Hook {
             $oBlog->setBlogLang($sLang);
             $oBlog->setBlogTitleL10n($sTitleText);
             $oBlog->setBlogDescriptionL10n($sDescriptionText);
-            $oBlog->setBlogUrlL10n(getRequest('blog_url' . '_' . $sLang, null, 'post'));
+            $oBlog->setBlogUrlL10n(getRequestStr('blog_url' . '_' . $sLang, null));
             if (!$this->Blog_ReplaceBlogL10n($oBlog)) {
                 $this->Message_AddError($this->Lang_Get('plugin.l10n.system_error'), $this->Lang_Get('error'));
             }
