@@ -12,14 +12,14 @@ Feature: L10n plugin standart features BDD
         | value  |
         | /topic/add/translate/3" alt="Translate" title="Translate">Translate</a> |
 
-      Given I am on "/en/topic/add/translate/3"
+      Given I am on "/ru/topic/add/translate/3"
       And I should see in element by css "content" values:
         | value  |
-        | <option value="russian" |
-        | Russian |
+        | <option value="english" |
+        | Английский |
       And I should not see "<option value=\"english\">"
 
-      Given I am on "/en/topic/edit/3"
+      Given I am on "/ru/topic/edit/3"
       And I should see in element by css "content" values:
         | value  |
         | <option value="russian" |
