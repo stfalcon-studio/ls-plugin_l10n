@@ -6,10 +6,10 @@ Feature: L10n plugin standart features BDD
         Given I am on "/login"
         Then I want to login as "admin"
 
-        Given I am on "/en/index/"
+        Given I am on "/ru/index/"
         And I should see in element by css "sidebar .block-content div[data-type='user']" values:
           | value |
-          | Tags empty |
+          | Нет тегов |
 
         And I should see in element by css "sidebar .block-content div[data-type='all']" values:
           | value |
